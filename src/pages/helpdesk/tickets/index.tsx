@@ -27,7 +27,7 @@ export default function TicketsModule() {
       const {
         data,
         error
-      } = await supabase.from('helpdesk_tickets').select('*, category:helpdesk_categories(name), assignee:helpdesk_tickets_assignee_id_fkey(full_name)').order('created_at', {
+      } = await supabase.from('helpdesk_tickets').select('*, category:helpdesk_categories(name), assignee:users!helpdesk_tickets_assignee_id_fkey(name)').order('created_at', {
         ascending: false
       });
       if (error) throw error;
@@ -185,7 +185,7 @@ export default function TicketsModule() {
                         </p>
                         <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
                           <span>Created {new Date(ticket.created_at).toLocaleDateString()}</span>
-                          {ticket.assignee && <span>• Assigned to {ticket.assignee.full_name}</span>}
+                          {ticket.assignee && <span>• Assigned to {ticket.assignee.name}</span>}
                         </div>
                       </div>
                     </div>
