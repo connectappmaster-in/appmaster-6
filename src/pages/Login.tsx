@@ -143,171 +143,168 @@ const Login = () => {
             <h1 className="text-2xl font-bold text-foreground">Sign in to continue to AppMaster</h1>
           </div>
 
-          {/* Login Form */}
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="login-email">Email</Label>
-              <Input
-                id="login-email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                placeholder="name@company.com"
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="login-password">Password</Label>
-              <Input
-                id="login-password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                placeholder="Enter your password"
-              />
-            </div>
-            
-            <div className="flex items-center justify-between text-sm">
-              <div className="flex items-center gap-2">
-                <Checkbox 
-                  id="remember" 
-                  checked={rememberMe}
-                  onCheckedChange={(checked) => setRememberMe(checked as boolean)}
+          {!isSignup ? (
+            /* Login Form */
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  placeholder="name@company.com"
                 />
-                <label htmlFor="remember" className="text-foreground cursor-pointer">
-                  Remember me
-                </label>
               </div>
-              <Link to="/password-reset" className="text-primary hover:underline">
-                Forgot password?
-              </Link>
-            </div>
-            
-            <Button 
-              type="submit" 
-              className="w-full" 
-              disabled={loading}
-            >
-              {loading ? "Signing in..." : (
-                <>
-                  <LogIn className="mr-2 h-4 w-4" />
-                  Sign in
-                </>
-              )}
-            </Button>
-          </form>
+              
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  placeholder="Enter your password"
+                />
+              </div>
+              
+              <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center gap-2">
+                  <Checkbox 
+                    id="remember" 
+                    checked={rememberMe}
+                    onCheckedChange={(checked) => setRememberMe(checked as boolean)}
+                  />
+                  <label htmlFor="remember" className="text-foreground cursor-pointer">
+                    Remember me
+                  </label>
+                </div>
+                <Link to="/password-reset" className="text-primary hover:underline">
+                  Forgot password?
+                </Link>
+              </div>
+              
+              <Button 
+                type="submit" 
+                className="w-full" 
+                disabled={loading}
+              >
+                {loading ? "Signing in..." : (
+                  <>
+                    <LogIn className="mr-2 h-4 w-4" />
+                    Sign in
+                  </>
+                )}
+              </Button>
+            </form>
+          ) : (
+            /* Signup Form */
+            <form onSubmit={handleSignup} className="space-y-4">
+              <div className="space-y-2">
+                <Label>Account Type</Label>
+                <ToggleGroup 
+                  type="single" 
+                  value={accountType}
+                  onValueChange={(value) => value && setAccountType(value as 'personal' | 'organization')}
+                  className="justify-start"
+                >
+                  <ToggleGroupItem value="personal" className="flex-1">
+                    Individual
+                  </ToggleGroupItem>
+                  <ToggleGroupItem value="organization" className="flex-1">
+                    Organization
+                  </ToggleGroupItem>
+                </ToggleGroup>
+              </div>
 
-          {/* Signup Toggle */}
+              <div className="space-y-2">
+                <Label htmlFor="name">Full Name</Label>
+                <Input
+                  id="name"
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                  placeholder="John Doe"
+                />
+              </div>
+
+              {accountType === 'organization' && (
+                <div className="space-y-2 animate-fade-in">
+                  <Label htmlFor="orgName">Organisation Name</Label>
+                  <Input
+                    id="orgName"
+                    type="text"
+                    value={orgName}
+                    onChange={(e) => setOrgName(e.target.value)}
+                    required
+                    placeholder="Acme Corp"
+                  />
+                </div>
+              )}
+
+              <div className="space-y-2">
+                <Label htmlFor="signup-email">Email</Label>
+                <Input
+                  id="signup-email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  placeholder="name@company.com"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="signup-password">Password</Label>
+                <Input
+                  id="signup-password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  placeholder="Minimum 6 characters"
+                  minLength={6}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="confirm-password">Confirm Password</Label>
+                <Input
+                  id="confirm-password"
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                  placeholder="Re-enter password"
+                  minLength={6}
+                />
+              </div>
+
+              <Button 
+                type="submit" 
+                className="w-full" 
+                disabled={loading}
+              >
+                {loading ? "Creating account..." : "Create Account"}
+              </Button>
+            </form>
+          )}
+
+          {/* Toggle between Login/Signup */}
           <div className="mt-6 pt-6 border-t border-border">
-            <p className="text-center text-sm text-muted-foreground mb-4">
-              Don't have an account?{" "}
+            <p className="text-center text-sm text-muted-foreground">
+              {isSignup ? "Already have an account?" : "Don't have an account?"}{" "}
               <button
                 type="button"
                 onClick={() => setIsSignup(!isSignup)}
                 className="text-primary font-medium hover:underline"
               >
-                {isSignup ? "Hide sign up" : "Sign up"}
+                {isSignup ? "Sign in" : "Sign up"}
               </button>
             </p>
-
-            {/* Signup Form - Expands inline */}
-            {isSignup && (
-              <div className="animate-fade-in space-y-4 pt-4">
-                <form onSubmit={handleSignup} className="space-y-4">
-                  {/* Account Type Toggle */}
-                  <div className="space-y-2">
-                    <Label>Account Type</Label>
-                    <ToggleGroup 
-                      type="single" 
-                      value={accountType}
-                      onValueChange={(value) => value && setAccountType(value as 'personal' | 'organization')}
-                      className="justify-start"
-                    >
-                      <ToggleGroupItem value="personal" className="flex-1">
-                        Individual
-                      </ToggleGroupItem>
-                      <ToggleGroupItem value="organization" className="flex-1">
-                        Organization
-                      </ToggleGroupItem>
-                    </ToggleGroup>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-name">Full Name</Label>
-                    <Input
-                      id="signup-name"
-                      type="text"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      required
-                      placeholder="John Doe"
-                    />
-                  </div>
-
-                  {accountType === 'organization' && (
-                    <div className="space-y-2 animate-fade-in">
-                      <Label htmlFor="signup-org">Organisation Name</Label>
-                      <Input
-                        id="signup-org"
-                        type="text"
-                        value={orgName}
-                        onChange={(e) => setOrgName(e.target.value)}
-                        required
-                        placeholder="Acme Corp"
-                      />
-                    </div>
-                  )}
-
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-email">Email</Label>
-                    <Input
-                      id="signup-email"
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                      placeholder="name@company.com"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-password">Password</Label>
-                    <Input
-                      id="signup-password"
-                      type="password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                      placeholder="Minimum 6 characters"
-                      minLength={6}
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="confirm-password">Confirm Password</Label>
-                    <Input
-                      id="confirm-password"
-                      type="password"
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                      required
-                      placeholder="Re-enter password"
-                      minLength={6}
-                    />
-                  </div>
-
-                  <Button 
-                    type="submit" 
-                    className="w-full" 
-                    disabled={loading}
-                  >
-                    {loading ? "Creating account..." : "Create Account"}
-                  </Button>
-                </form>
-              </div>
-            )}
           </div>
         </div>
       </div>
