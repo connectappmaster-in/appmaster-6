@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Loader2, Clock, User, Tag, MessageSquare, ArrowLeft, Edit, UserPlus, FileText, History, Paperclip, Link } from "lucide-react";
+import { Loader2, Clock, User, Tag, MessageSquare, Edit, UserPlus, FileText, History, Paperclip, Link } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { toast } from "sonner";
 import { useState } from "react";
@@ -195,123 +195,122 @@ export default function TicketDetail() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container mx-auto py-8 px-4 max-w-5xl">
-        <div className="flex items-center justify-between mb-6">
-          <Button
-            variant="ghost"
-            onClick={() => navigate("/helpdesk/tickets")}
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Tickets
-          </Button>
+      <div className="w-full px-4 py-2">
+        <div className="flex items-center justify-between gap-3 mb-2">
+          <div className="flex items-center gap-2 flex-1 min-w-0">
+            <Badge variant="outline" className="font-mono text-sm px-2 py-0.5 shrink-0">
+              {ticket.ticket_number}
+            </Badge>
+            <Badge className={`${getPriorityColor(ticket.priority)} text-white text-xs px-2 py-0.5 shrink-0`}>
+              {ticket.priority}
+            </Badge>
+            {ticket.category && (
+              <Badge variant="outline" className="text-xs px-2 py-0.5 shrink-0">{ticket.category.name}</Badge>
+            )}
+          </div>
 
-          <div className="flex gap-2">
+          <div className="flex gap-2 shrink-0">
             <Button
               variant="outline"
+              size="sm"
               onClick={() => setAssignDialog(true)}
+              className="h-8"
             >
-              <UserPlus className="h-4 w-4 mr-2" />
+              <UserPlus className="h-3.5 w-3.5 mr-1.5" />
               Assign
             </Button>
             <Button
               variant="outline"
+              size="sm"
               onClick={() => setEditDialog(true)}
+              className="h-8"
             >
-              <Edit className="h-4 w-4 mr-2" />
+              <Edit className="h-3.5 w-3.5 mr-1.5" />
               Edit
             </Button>
           </div>
         </div>
 
-        <div className="mb-6">
-          <div className="flex items-center gap-3 mb-3">
-            <Badge variant="outline" className="font-mono text-lg px-3 py-1">
-              {ticket.ticket_number}
-            </Badge>
-            <Badge className={`${getPriorityColor(ticket.priority)} text-white`}>
-              {ticket.priority}
-            </Badge>
-            {ticket.category && (
-              <Badge variant="outline">{ticket.category.name}</Badge>
-            )}
-          </div>
-          <h1 className="text-3xl font-bold mb-2">{ticket.title}</h1>
-          <p className="text-muted-foreground">
+        <div className="mb-3">
+          <h1 className="text-xl font-bold mb-1 truncate">{ticket.title}</h1>
+          <p className="text-xs text-muted-foreground">
             Created {formatDistanceToNow(new Date(ticket.created_at), { addSuffix: true })}
           </p>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-3">
+        <div className="grid gap-3 lg:grid-cols-3">
           <div className="lg:col-span-2">
             <Tabs defaultValue="details" className="w-full">
-              <TabsList className="grid w-full grid-cols-5">
-                <TabsTrigger value="details">
-                  <FileText className="h-4 w-4 mr-2" />
+              <TabsList className="grid w-full grid-cols-5 h-9">
+                <TabsTrigger value="details" className="text-xs px-2 py-1.5">
+                  <FileText className="h-3.5 w-3.5 mr-1" />
                   Details
                 </TabsTrigger>
-                <TabsTrigger value="comments">
-                  <MessageSquare className="h-4 w-4 mr-2" />
+                <TabsTrigger value="comments" className="text-xs px-2 py-1.5">
+                  <MessageSquare className="h-3.5 w-3.5 mr-1" />
                   Comments ({comments?.length || 0})
                 </TabsTrigger>
-                <TabsTrigger value="history">
-                  <History className="h-4 w-4 mr-2" />
+                <TabsTrigger value="history" className="text-xs px-2 py-1.5">
+                  <History className="h-3.5 w-3.5 mr-1" />
                   History
                 </TabsTrigger>
-                <TabsTrigger value="attachments">
-                  <Paperclip className="h-4 w-4 mr-2" />
+                <TabsTrigger value="attachments" className="text-xs px-2 py-1.5">
+                  <Paperclip className="h-3.5 w-3.5 mr-1" />
                   Attachments ({attachments?.length || 0})
                 </TabsTrigger>
-                <TabsTrigger value="problems">
-                  <Link className="h-4 w-4 mr-2" />
+                <TabsTrigger value="problems" className="text-xs px-2 py-1.5">
+                  <Link className="h-3.5 w-3.5 mr-1" />
                   Problems ({linkedProblems?.length || 0})
                 </TabsTrigger>
               </TabsList>
 
-              <TabsContent value="details" className="mt-6">
+              <TabsContent value="details" className="mt-3">
                 <Card>
-                  <CardHeader>
-                    <CardTitle>Description</CardTitle>
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-base">Description</CardTitle>
                   </CardHeader>
-                  <CardContent>
-                    <p className="whitespace-pre-wrap">{ticket.description}</p>
+                  <CardContent className="pt-0">
+                    <p className="whitespace-pre-wrap text-sm">{ticket.description}</p>
                   </CardContent>
                 </Card>
               </TabsContent>
 
-              <TabsContent value="comments" className="mt-6">
+              <TabsContent value="comments" className="mt-3">
                 <Card>
-                  <CardContent className="pt-6 space-y-4">
+                  <CardContent className="pt-4 space-y-3">
                     {comments && comments.length > 0 ? (
                       comments.map((c: any) => (
-                        <div key={c.id} className="border-b pb-4 last:border-0">
-                          <div className="flex items-center justify-between mb-2">
-                            <span className="font-medium">{c.user?.name || "Unknown"}</span>
-                            <span className="text-sm text-muted-foreground">
+                        <div key={c.id} className="border-b pb-3 last:border-0">
+                          <div className="flex items-center justify-between mb-1.5">
+                            <span className="font-medium text-sm">{c.user?.name || "Unknown"}</span>
+                            <span className="text-xs text-muted-foreground">
                               {formatDistanceToNow(new Date(c.created_at), { addSuffix: true })}
                             </span>
                           </div>
                           <p className="text-sm whitespace-pre-wrap">{c.comment}</p>
                           {c.is_internal && (
-                            <Badge variant="secondary" className="mt-2">Internal</Badge>
+                            <Badge variant="secondary" className="mt-1.5 text-xs">Internal</Badge>
                           )}
                         </div>
                       ))
                     ) : (
-                      <p className="text-sm text-muted-foreground text-center py-4">No comments yet</p>
+                      <p className="text-sm text-muted-foreground text-center py-3">No comments yet</p>
                     )}
 
-                    <div className="pt-4 space-y-3">
+                    <div className="pt-3 space-y-2">
                       <Textarea
                         placeholder="Add a comment..."
                         value={comment}
                         onChange={(e) => setComment(e.target.value)}
-                        rows={3}
+                        rows={2}
+                        className="text-sm"
                       />
                       <Button
+                        size="sm"
                         onClick={() => comment.trim() && addComment.mutate(comment)}
                         disabled={!comment.trim() || addComment.isPending}
                       >
-                        {addComment.isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                        {addComment.isPending && <Loader2 className="mr-2 h-3.5 w-3.5 animate-spin" />}
                         Add Comment
                       </Button>
                     </div>
@@ -319,15 +318,15 @@ export default function TicketDetail() {
                 </Card>
               </TabsContent>
 
-              <TabsContent value="history" className="mt-6">
+              <TabsContent value="history" className="mt-3">
                 <Card>
-                  <CardContent className="pt-6 space-y-4">
+                  <CardContent className="pt-4 space-y-3">
                     {history && history.length > 0 ? (
                       history.map((h: any) => (
-                        <div key={h.id} className="border-b pb-4 last:border-0">
-                          <div className="flex items-center justify-between mb-2">
-                            <span className="font-medium">{h.user?.name || "System"}</span>
-                            <span className="text-sm text-muted-foreground">
+                        <div key={h.id} className="border-b pb-3 last:border-0">
+                          <div className="flex items-center justify-between mb-1.5">
+                            <span className="font-medium text-sm">{h.user?.name || "System"}</span>
+                            <span className="text-xs text-muted-foreground">
                               {formatDistanceToNow(new Date(h.timestamp), { addSuffix: true })}
                             </span>
                           </div>
@@ -340,29 +339,29 @@ export default function TicketDetail() {
                         </div>
                       ))
                     ) : (
-                      <p className="text-sm text-muted-foreground text-center py-4">No history yet</p>
+                      <p className="text-sm text-muted-foreground text-center py-3">No history yet</p>
                     )}
                   </CardContent>
                 </Card>
               </TabsContent>
 
-              <TabsContent value="attachments" className="mt-6">
+              <TabsContent value="attachments" className="mt-3">
                 <Card>
-                  <CardContent className="pt-6 space-y-4">
+                  <CardContent className="pt-4 space-y-3">
                     {attachments && attachments.length > 0 ? (
                       attachments.map((a: any) => (
-                        <div key={a.id} className="flex items-center justify-between border-b pb-4 last:border-0">
-                          <div className="flex items-center gap-3">
-                            <Paperclip className="h-4 w-4 text-muted-foreground" />
-                            <div>
-                              <p className="font-medium">{a.file_name}</p>
-                              <p className="text-sm text-muted-foreground">
-                                Uploaded by {a.uploaded_by_user?.name || "Unknown"} •{" "}
+                        <div key={a.id} className="flex items-center justify-between border-b pb-3 last:border-0">
+                          <div className="flex items-center gap-2 min-w-0">
+                            <Paperclip className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                            <div className="min-w-0">
+                              <p className="font-medium text-sm truncate">{a.file_name}</p>
+                              <p className="text-xs text-muted-foreground">
+                                {a.uploaded_by_user?.name || "Unknown"} •{" "}
                                 {formatDistanceToNow(new Date(a.uploaded_at), { addSuffix: true })}
                               </p>
                             </div>
                           </div>
-                          <Button variant="outline" size="sm" asChild>
+                          <Button variant="outline" size="sm" className="h-7 text-xs shrink-0" asChild>
                             <a href={a.file_url} target="_blank" rel="noopener noreferrer">
                               Download
                             </a>
@@ -370,29 +369,29 @@ export default function TicketDetail() {
                         </div>
                       ))
                     ) : (
-                      <p className="text-sm text-muted-foreground text-center py-4">No attachments</p>
+                      <p className="text-sm text-muted-foreground text-center py-3">No attachments</p>
                     )}
                   </CardContent>
                 </Card>
               </TabsContent>
 
-              <TabsContent value="problems" className="mt-6">
+              <TabsContent value="problems" className="mt-3">
                 <Card>
-                  <CardContent className="pt-6 space-y-4">
+                  <CardContent className="pt-4 space-y-3">
                     {linkedProblems && linkedProblems.length > 0 ? (
                       linkedProblems.map((lp: any) => (
-                        <div key={lp.id} className="border-b pb-4 last:border-0">
+                        <div key={lp.id} className="border-b pb-3 last:border-0">
                           <div className="flex items-center justify-between">
                             <div>
-                              <p className="font-medium">{lp.problem?.problem_number}</p>
-                              <p className="text-sm">{lp.problem?.problem_title}</p>
+                              <p className="font-medium text-sm">{lp.problem?.problem_number}</p>
+                              <p className="text-xs text-muted-foreground">{lp.problem?.problem_title}</p>
                             </div>
-                            <Badge>{lp.problem?.status}</Badge>
+                            <Badge className="text-xs">{lp.problem?.status}</Badge>
                           </div>
                         </div>
                       ))
                     ) : (
-                      <p className="text-sm text-muted-foreground text-center py-4">No linked problems</p>
+                      <p className="text-sm text-muted-foreground text-center py-3">No linked problems</p>
                     )}
                   </CardContent>
                 </Card>
@@ -400,17 +399,17 @@ export default function TicketDetail() {
             </Tabs>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-3">
             <Card>
-              <CardHeader>
-                <CardTitle>Status</CardTitle>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base">Status</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-3">
+              <CardContent className="space-y-2 pt-0">
                 <Select
                   value={newStatus || ticket.status}
                   onValueChange={setNewStatus}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="h-8 text-sm">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -423,9 +422,10 @@ export default function TicketDetail() {
                 </Select>
                 {newStatus && newStatus !== ticket.status && (
                   <Button
+                    size="sm"
                     onClick={() => updateStatus.mutate(newStatus)}
                     disabled={updateStatus.isPending}
-                    className="w-full"
+                    className="w-full h-8"
                   >
                     Update Status
                   </Button>
@@ -434,35 +434,35 @@ export default function TicketDetail() {
             </Card>
 
             <Card>
-              <CardHeader>
-                <CardTitle>Details</CardTitle>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base">Details</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-3 text-sm">
+              <CardContent className="space-y-2.5 text-sm pt-0">
                 <div className="flex items-start gap-2">
-                  <User className="h-4 w-4 mt-0.5 text-muted-foreground" />
-                  <div>
-                    <p className="text-muted-foreground">Requester</p>
-                    <p className="font-medium">{ticket.requester?.name || "Unknown"}</p>
+                  <User className="h-3.5 w-3.5 mt-0.5 text-muted-foreground shrink-0" />
+                  <div className="min-w-0">
+                    <p className="text-xs text-muted-foreground">Requester</p>
+                    <p className="font-medium truncate">{ticket.requester?.name || "Unknown"}</p>
                   </div>
                 </div>
 
                 {ticket.assignee && (
                   <div className="flex items-start gap-2">
-                    <Tag className="h-4 w-4 mt-0.5 text-muted-foreground" />
-                    <div>
-                      <p className="text-muted-foreground">Assigned to</p>
-                      <p className="font-medium">{ticket.assignee.name}</p>
+                    <Tag className="h-3.5 w-3.5 mt-0.5 text-muted-foreground shrink-0" />
+                    <div className="min-w-0">
+                      <p className="text-xs text-muted-foreground">Assigned to</p>
+                      <p className="font-medium truncate">{ticket.assignee.name}</p>
                     </div>
                   </div>
                 )}
 
                 {ticket.sla_due_date && (
                   <div className="flex items-start gap-2">
-                    <Clock className="h-4 w-4 mt-0.5 text-muted-foreground" />
-                    <div>
-                      <p className="text-muted-foreground">SLA Due</p>
+                    <Clock className="h-3.5 w-3.5 mt-0.5 text-muted-foreground shrink-0" />
+                    <div className="min-w-0">
+                      <p className="text-xs text-muted-foreground">SLA Due</p>
                       <p className="font-medium">
-                        {formatDistanceToNow(new Date(ticket.sla_due_date), { addSuffix: true })}
+                        in {formatDistanceToNow(new Date(ticket.sla_due_date))}
                       </p>
                     </div>
                   </div>
