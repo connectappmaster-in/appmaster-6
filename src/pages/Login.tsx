@@ -69,7 +69,7 @@ const Login = () => {
         description: "Logged in successfully!",
       });
 
-      navigate("/dashboard");
+      navigate("/");
     } catch (error: any) {
       toast({
         title: "Error",
@@ -115,14 +115,11 @@ const Login = () => {
 
       toast({
         title: "Success",
-        description: "Account created! Please check your email to verify.",
+        description: "Account created! Please log in with your credentials.",
       });
 
-      if (data.user) {
-        navigate(redirectTo);
-      } else {
-        setIsSignup(false);
-      }
+      // Switch back to login form - no auto-login
+      setIsSignup(false);
     } catch (error: any) {
       toast({
         title: "Error",
