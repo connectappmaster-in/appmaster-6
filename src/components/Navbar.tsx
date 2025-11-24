@@ -1,8 +1,8 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
-import { LogOut, Settings, User, Shield, ArrowLeft } from "lucide-react";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { LogOut, Settings, User, Shield, ArrowLeft, LayoutDashboard, Building2 } from "lucide-react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import logo from "@/assets/appmaster-logo.png";
 import { useState, useEffect } from "react";
 import { NotificationPanel } from "@/components/NotificationPanel";
@@ -11,13 +11,42 @@ const Navbar = () => {
     user,
     signOut,
     userType,
-    appmasterRole
+    appmasterRole,
+    userRole
   } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const isLandingPage = location.pathname === "/";
   const isProfilePage = location.pathname.startsWith("/profile");
   const [isScrolled, setIsScrolled] = useState(false);
+
+  // Determine role-based dashboard link
+  const getRoleDashboardLink = () => {
+    // Super Admin
+    if (userType === 'appmaster_admin' || appmasterRole) {
+      return { label: 'Super-Admin Panel', path: '/super-admin/dashboard', icon: Shield };
+    }
+    
+    // Individual User
+    if (userType === 'individual') {
+      return { label: 'Dashboard', path: '/dashboard/individual', icon: LayoutDashboard };
+    }
+    
+    // Organization User
+    if (userType === 'organization') {
+      // Check if admin
+      if (userRole === 'owner' || userRole === 'admin') {
+        return { label: 'Org-Admin Panel', path: '/org-admin', icon: Building2 };
+      }
+      // Regular org user
+      return { label: 'Dashboard', path: '/dashboard/org-viewer', icon: LayoutDashboard };
+    }
+    
+    // Default fallback
+    return { label: 'Dashboard', path: '/dashboard/individual', icon: LayoutDashboard };
+  };
+
+  const roleDashboard = getRoleDashboardLink();
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
@@ -48,18 +77,21 @@ const Navbar = () => {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-48">
-                  {!isProfilePage && <DropdownMenuItem asChild>
-                    <Link to="/profile" className="cursor-pointer">
-                      <User className="mr-2 h-4 w-4" />
-                      Profile
-                    </Link>
-                  </DropdownMenuItem>}
-                  {(userType === 'appmaster_admin' || appmasterRole) && <DropdownMenuItem asChild>
-                      <Link to="/super-admin" className="cursor-pointer">
-                        <Shield className="mr-2 h-4 w-4" />
-                        Admin Panel
+                  {!isProfilePage && (
+                    <DropdownMenuItem asChild>
+                      <Link to="/profile" className="cursor-pointer">
+                        <User className="mr-2 h-4 w-4" />
+                        Profile
                       </Link>
-                    </DropdownMenuItem>}
+                    </DropdownMenuItem>
+                  )}
+                  <DropdownMenuItem asChild>
+                    <Link to={roleDashboard.path} className="cursor-pointer">
+                      <roleDashboard.icon className="mr-2 h-4 w-4" />
+                      {roleDashboard.label}
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={signOut} className="cursor-pointer">
                     <LogOut className="mr-2 h-4 w-4" />
                     Logout
