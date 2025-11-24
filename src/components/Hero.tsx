@@ -101,10 +101,10 @@ const Hero = () => {
                   </div>
                   <div className="flex-1">
                     <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors mb-1">
-                      Need Help or Custom Tools?
+                      Need a Custom Tool?
                     </h3>
                     <p className="text-sm text-muted-foreground">
-                      Report issues, request features, or build custom solutions for your business
+                      Let's build something specific for your business needs
                     </p>
                   </div>
                   <ArrowRight className="h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all duration-300" />
