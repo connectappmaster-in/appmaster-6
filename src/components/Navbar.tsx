@@ -56,14 +56,25 @@ const Navbar = () => {
   }, []);
   return <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-[var(--transition-base)] ${isScrolled ? "bg-background/95 backdrop-blur-lg shadow-sm border-b" : "bg-transparent"}`}>
       <div className="w-full px-4 sm:px-6 lg:px-8 py-3 items-center justify-between flex flex-row">
-        <Button 
-          variant="ghost" 
-          size="icon" 
-          onClick={() => navigate(-1)}
-          className={isLandingPage ? "invisible" : "opacity-0 hover:opacity-100 transition-opacity duration-[var(--transition-base)]"}
-        >
-          <ArrowLeft className="h-4 w-4" />
-        </Button>
+        <div className="flex items-center gap-2">
+          <Link to="/" className="flex items-center">
+            <img 
+              src={logo} 
+              alt="AppMaster" 
+              className="h-8 w-auto"
+            />
+          </Link>
+          {!isLandingPage && (
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={() => navigate(-1)}
+              className="opacity-0 hover:opacity-100 transition-opacity duration-[var(--transition-base)]"
+            >
+              <ArrowLeft className="h-4 w-4" />
+            </Button>
+          )}
+        </div>
         <nav className="flex items-center gap-1">
           {user ? <>
               {!isLandingPage && <Link to="/dashboard">
