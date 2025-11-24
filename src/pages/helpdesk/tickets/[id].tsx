@@ -210,6 +210,25 @@ export default function TicketDetail() {
           </div>
 
           <div className="flex gap-2 shrink-0">
+            <Select
+              value={newStatus || ticket.status}
+              onValueChange={(status) => {
+                setNewStatus(status);
+                updateStatus.mutate(status);
+              }}
+            >
+              <SelectTrigger className="h-8 w-[140px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="open">Open</SelectItem>
+                <SelectItem value="in_progress">In Progress</SelectItem>
+                <SelectItem value="on_hold">On Hold</SelectItem>
+                <SelectItem value="resolved">Resolved</SelectItem>
+                <SelectItem value="closed">Closed</SelectItem>
+              </SelectContent>
+            </Select>
+            
             <Button
               variant="outline"
               size="sm"
@@ -400,39 +419,6 @@ export default function TicketDetail() {
           </div>
 
           <div className="space-y-3">
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-base">Status</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2 pt-0">
-                <Select
-                  value={newStatus || ticket.status}
-                  onValueChange={setNewStatus}
-                >
-                  <SelectTrigger className="h-8 text-sm">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="open">Open</SelectItem>
-                    <SelectItem value="in_progress">In Progress</SelectItem>
-                    <SelectItem value="on_hold">On Hold</SelectItem>
-                    <SelectItem value="resolved">Resolved</SelectItem>
-                    <SelectItem value="closed">Closed</SelectItem>
-                  </SelectContent>
-                </Select>
-                {newStatus && newStatus !== ticket.status && (
-                  <Button
-                    size="sm"
-                    onClick={() => updateStatus.mutate(newStatus)}
-                    disabled={updateStatus.isPending}
-                    className="w-full h-8"
-                  >
-                    Update Status
-                  </Button>
-                )}
-              </CardContent>
-            </Card>
-
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-base">Details</CardTitle>
