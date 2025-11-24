@@ -71,11 +71,21 @@ const Login = () => {
 
       navigate("/");
     } catch (error: any) {
-      toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive",
-      });
+      // Check if it's a network/connectivity error
+      if (error.message === "Failed to fetch" || error.message.includes("fetch")) {
+        toast({
+          title: "Connection Error",
+          description: "Cannot reach authentication server. Your Supabase project may be paused or there's a network issue. Please check your Supabase dashboard.",
+          variant: "destructive",
+          duration: 6000,
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: error.message || "An error occurred during login",
+          variant: "destructive",
+        });
+      }
     } finally {
       setLoading(false);
     }
@@ -121,11 +131,21 @@ const Login = () => {
       // Switch back to login form - no auto-login
       setIsSignup(false);
     } catch (error: any) {
-      toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive",
-      });
+      // Check if it's a network/connectivity error
+      if (error.message === "Failed to fetch" || error.message.includes("fetch")) {
+        toast({
+          title: "Connection Error",
+          description: "Cannot reach authentication server. Your Supabase project may be paused or there's a network issue. Please check your Supabase dashboard.",
+          variant: "destructive",
+          duration: 6000,
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: error.message || "An error occurred during signup",
+          variant: "destructive",
+        });
+      }
     } finally {
       setLoading(false);
     }
