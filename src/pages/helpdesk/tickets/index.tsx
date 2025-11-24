@@ -76,22 +76,7 @@ export default function TicketsModule() {
   };
   const quickLinks: any[] = [];
   return <div className="min-h-screen bg-background">
-      <div className="w-full px-4 py-2">
-        {/* Header */}
-        <div className="mb-2">
-          {/* Quick Links */}
-          <div className="flex flex-wrap gap-1.5">
-            {quickLinks.map(link => {
-            const Icon = link.icon;
-            return <Button key={link.path} variant="outline" size="sm" onClick={() => navigate(link.path)} className="gap-1.5 h-7 px-2.5 text-xs">
-                  <Icon className="h-3 w-3" />
-                  <span>{link.label}</span>
-                </Button>;
-          })}
-          </div>
-
-        </div>
-
+      <div className="w-full px-4 pt-2 pb-3">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-2">
           {/* Compact Single Row Header */}
           <div className="flex items-center gap-2 flex-wrap">
