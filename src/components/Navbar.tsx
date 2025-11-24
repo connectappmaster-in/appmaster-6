@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { LogOut, Settings, User, Shield, ArrowLeft, LayoutDashboard, Building2 } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
-import logo from "@/assets/appmaster-logo-new.png";
+import logo from "@/assets/appmaster-logo.png";
 import { useState, useEffect } from "react";
 import { NotificationPanel } from "@/components/NotificationPanel";
 const Navbar = () => {
