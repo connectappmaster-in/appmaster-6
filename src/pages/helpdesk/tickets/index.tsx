@@ -114,10 +114,10 @@ export default function TicketsModule() {
 
             {activeTab === 'tickets' && (
               <>
-                <div className="relative flex-1 min-w-[300px]">
+                <div className="relative w-[250px]">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
-                    placeholder="Search tickets by title, description, or ticket number..."
+                    placeholder="Search tickets..."
                     value={filters.search || ''}
                     onChange={(e) => setFilters({ ...filters, search: e.target.value })}
                     className="pl-9 h-8"
