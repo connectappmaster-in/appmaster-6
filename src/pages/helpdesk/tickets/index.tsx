@@ -91,40 +91,40 @@ export default function TicketsModule() {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-3">
-          {/* Tabs Header with Actions */}
-          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-2">
-            <TabsList className="h-9">
-              <TabsTrigger value="tickets" className="gap-1.5 px-4 text-sm">
-                <Ticket className="h-3.5 w-3.5" />
-                All Tickets
-                {tickets.length > 0 && <Badge variant="secondary" className="ml-1.5 text-xs px-1.5 py-0">
-                    {tickets.length}
-                  </Badge>}
-              </TabsTrigger>
-              <TabsTrigger value="problems" className="gap-1.5 px-4 text-sm">
-                <AlertTriangle className="h-3.5 w-3.5" />
-                Problems
-                {problems.length > 0 && <Badge variant="secondary" className="ml-1.5 text-xs px-1.5 py-0">
-                    {problems.length}
-                  </Badge>}
-              </TabsTrigger>
-            </TabsList>
-            
-            <div className="flex items-center gap-2">
-              {activeTab === 'tickets' && <Button size="sm" onClick={() => navigate('/helpdesk/new')} className="gap-1.5 h-8">
-                <Plus className="h-3.5 w-3.5" />
-                <span className="text-sm">New Ticket</span>
-              </Button>}
-              {activeTab === 'problems' && <Button variant="outline" size="sm" onClick={() => setCreateProblemOpen(true)} className="gap-1.5 h-8">
-                <Plus className="h-3.5 w-3.5" />
-                <span className="text-sm">New Problem</span>
-              </Button>}
-            </div>
+          {/* Tabs Header */}
+          <TabsList className="h-9">
+            <TabsTrigger value="tickets" className="gap-1.5 px-4 text-sm">
+              <Ticket className="h-3.5 w-3.5" />
+              All Tickets
+              {tickets.length > 0 && <Badge variant="secondary" className="ml-1.5 text-xs px-1.5 py-0">
+                  {tickets.length}
+                </Badge>}
+            </TabsTrigger>
+            <TabsTrigger value="problems" className="gap-1.5 px-4 text-sm">
+              <AlertTriangle className="h-3.5 w-3.5" />
+              Problems
+              {problems.length > 0 && <Badge variant="secondary" className="ml-1.5 text-xs px-1.5 py-0">
+                  {problems.length}
+                </Badge>}
+            </TabsTrigger>
+          </TabsList>
+
+          {/* Filters */}
+          {activeTab === 'tickets' && <TicketFilters onFilterChange={setFilters} activeFilters={filters} />}
+
+          {/* Action Buttons */}
+          <div className="flex items-center justify-end gap-2">
+            {activeTab === 'tickets' && <Button size="sm" onClick={() => navigate('/helpdesk/new')} className="gap-1.5 h-8">
+              <Plus className="h-3.5 w-3.5" />
+              <span className="text-sm">New Ticket</span>
+            </Button>}
+            {activeTab === 'problems' && <Button variant="outline" size="sm" onClick={() => setCreateProblemOpen(true)} className="gap-1.5 h-8">
+              <Plus className="h-3.5 w-3.5" />
+              <span className="text-sm">New Problem</span>
+            </Button>}
           </div>
 
           <TabsContent value="tickets" className="space-y-2">
-            {/* Filters */}
-            <TicketFilters onFilterChange={setFilters} activeFilters={filters} />
 
             {/* Bulk Actions */}
             {selectedIds.length > 0 && <BulkActionsToolbar selectedIds={selectedIds} onClearSelection={() => setSelectedIds([])} />}
