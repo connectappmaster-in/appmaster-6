@@ -74,19 +74,7 @@ export default function TicketsModule() {
   const handleSelectAll = (checked: boolean) => {
     setSelectedIds(checked ? tickets.map((t: any) => t.id) : []);
   };
-  const quickLinks = [{
-    icon: BookOpen,
-    label: "Knowledge Base",
-    path: "/helpdesk/kb"
-  }, {
-    icon: Clock,
-    label: "SLA Policies",
-    path: "/helpdesk/sla"
-  }, {
-    icon: Settings,
-    label: "Assignment Rules",
-    path: "/helpdesk/tickets/assignment-rules"
-  }];
+  const quickLinks: any[] = [];
   return <div className="min-h-screen bg-background">
       <div className="w-full px-4 py-3">
         {/* Header */}
