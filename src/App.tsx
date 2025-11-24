@@ -80,6 +80,7 @@ import SuperAdminAdmins from "./pages/super-admin/admins";
 import SuperAdminSettings from "./pages/super-admin/settings";
 import SuperAdminLogs from "./pages/super-admin/logs";
 import SuperAdminContactSubmissions from "./pages/super-admin/contact-submissions";
+import SuperAdminIssueReports from "./pages/super-admin/issue-reports";
 import SuperAdminBroadcasts from "./pages/super-admin/broadcasts";
 import SuperAdminOrganizationUsers from "./pages/super-admin/organization-users";
 import SuperAdminTools from "./pages/super-admin/tools";
@@ -199,6 +200,7 @@ const App = () => {
             <Route path="jobs" element={<SuperAdminJobs />} />
             <Route path="admins" element={<SuperAdminAdmins />} />
             <Route path="contact-submissions" element={<SuperAdminContactSubmissions />} />
+            <Route path="issue-reports" element={<SuperAdminIssueReports />} />
             <Route path="broadcasts" element={<SuperAdminBroadcasts />} />
             <Route path="organization-users" element={<SuperAdminOrganizationUsers />} />
             <Route path="settings" element={<SuperAdminSettings />} />
