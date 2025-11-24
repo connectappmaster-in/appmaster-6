@@ -10,7 +10,6 @@ const navigationItems = [
   { title: "Home", icon: Home, id: "home" },
   { title: "Personal info", icon: User, id: "personal-info" },
   { title: "Security", icon: Shield, id: "security" },
-  { title: "Privacy", icon: Shield, id: "privacy" },
   { title: "Payments", icon: CreditCard, id: "payments", adminOnly: true },
 ];
 

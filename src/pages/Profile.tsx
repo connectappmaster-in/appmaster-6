@@ -16,7 +16,6 @@ import Navbar from "@/components/Navbar";
 import { Loader2, Mail, Shield, Lock, Key, Smartphone, Activity, Eye, Settings, AlertCircle, CheckCircle2 } from "lucide-react";
 import PersonalInfo from "./profile/PersonalInfo";
 import Security from "./profile/Security";
-import Privacy from "./profile/Privacy";
 import Payments from "./profile/Payments";
 const Profile = () => {
   const {
@@ -59,7 +58,7 @@ const Profile = () => {
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
     
-    const sections = ["home", "personal-info", "security", "privacy", "payments"];
+    const sections = ["home", "personal-info", "security", "payments"];
     sections.forEach((id) => {
       const element = document.getElementById(id);
       if (element) observer.observe(element);
@@ -324,14 +323,6 @@ const Profile = () => {
                   element?.scrollIntoView({ behavior: "smooth", block: "start" });
                 }} />
 
-              {/* Privacy Settings Card */}
-              <ProfileCard title="Privacy settings available" description="Take the Privacy Checkup and choose the settings that are right for you" icon={<div className="w-16 h-16 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center">
-                    <Eye className="h-8 w-8 text-white" />
-                  </div>} actionLabel="Review privacy settings" onAction={() => {
-                  const element = document.getElementById("privacy");
-                  element?.scrollIntoView({ behavior: "smooth", block: "start" });
-                }} />
-
               {/* Account Information Card */}
               <ProfileCard title="Account information" description="View and manage your account details and preferences" icon={<div className="w-16 h-16 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center">
                     <AlertCircle className="h-8 w-8 text-white" />
@@ -370,11 +361,6 @@ const Profile = () => {
           {/* Security Section */}
           <section id="security" className="py-4">
             <Security />
-          </section>
-
-          {/* Privacy Section */}
-          <section id="privacy" className="py-4">
-            <Privacy />
           </section>
 
           {/* Payments Section */}
