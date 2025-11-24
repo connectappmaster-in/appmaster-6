@@ -74,12 +74,14 @@ const Hero = () => {
             <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-7xl mx-auto">
               {featuredApps.map((app, index) => <Link key={index} to={app.path} className="block h-full">
                   <div className="bg-card/80 backdrop-blur-sm border border-border rounded-lg p-4 shadow-lg hover:shadow-2xl transition-all duration-300 group hover:border-primary/50 hover:scale-105 h-full">
-                    <div className={`p-3 rounded-lg bg-background border border-border ${app.color} group-hover:scale-110 transition-transform duration-300 w-fit mb-3`}>
-                      <app.icon className="h-6 w-6" />
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className={`p-3 rounded-lg bg-background border border-border ${app.color} group-hover:scale-110 transition-transform duration-300`}>
+                        <app.icon className="h-6 w-6" />
+                      </div>
+                      <h4 className="font-semibold text-foreground group-hover:text-primary transition-colors text-sm">
+                        {app.name}
+                      </h4>
                     </div>
-                    <h4 className="font-semibold text-foreground group-hover:text-primary transition-colors text-sm mb-2">
-                      {app.name}
-                    </h4>
                     <p className="text-xs text-muted-foreground line-clamp-2 mb-3">
                       {app.description}
                     </p>
