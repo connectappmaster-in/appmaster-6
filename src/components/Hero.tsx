@@ -47,7 +47,7 @@ const Hero = () => {
               </div>
               <h1 className="text-4xl font-bold text-foreground leading-tight lg:text-5xl font-display">
                 Simplify Operations,{" "}
-                <span className="bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
+                <span className="text-primary">
                   Amplify Growth
                 </span>
               </h1>
