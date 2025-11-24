@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
-import { Plus, Ticket, AlertTriangle } from "lucide-react";
+import { Plus, Ticket, AlertTriangle, Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -11,6 +11,8 @@ import { TicketFilters } from "@/components/helpdesk/TicketFilters";
 import { BulkActionsToolbar } from "@/components/helpdesk/BulkActionsToolbar";
 import { TicketTableView } from "@/components/helpdesk/TicketTableView";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 export default function TicketsModule() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("tickets");
@@ -91,37 +93,83 @@ export default function TicketsModule() {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-3">
-          {/* Tabs Header */}
-          <TabsList className="h-9">
-            <TabsTrigger value="tickets" className="gap-1.5 px-4 text-sm">
-              <Ticket className="h-3.5 w-3.5" />
-              All Tickets
-              {tickets.length > 0 && <Badge variant="secondary" className="ml-1.5 text-xs px-1.5 py-0">
-                  {tickets.length}
-                </Badge>}
-            </TabsTrigger>
-            <TabsTrigger value="problems" className="gap-1.5 px-4 text-sm">
-              <AlertTriangle className="h-3.5 w-3.5" />
-              Problems
-              {problems.length > 0 && <Badge variant="secondary" className="ml-1.5 text-xs px-1.5 py-0">
-                  {problems.length}
-                </Badge>}
-            </TabsTrigger>
-          </TabsList>
+          {/* Compact Single Row Header */}
+          <div className="flex items-center gap-2 flex-wrap">
+            <TabsList className="h-9">
+              <TabsTrigger value="tickets" className="gap-1.5 px-3 text-sm h-8">
+                <Ticket className="h-3.5 w-3.5" />
+                All Tickets
+                {tickets.length > 0 && <Badge variant="secondary" className="ml-1.5 text-xs px-1.5 py-0">
+                    {tickets.length}
+                  </Badge>}
+              </TabsTrigger>
+              <TabsTrigger value="problems" className="gap-1.5 px-3 text-sm h-8">
+                <AlertTriangle className="h-3.5 w-3.5" />
+                Problems
+                {problems.length > 0 && <Badge variant="secondary" className="ml-1.5 text-xs px-1.5 py-0">
+                    {problems.length}
+                  </Badge>}
+              </TabsTrigger>
+            </TabsList>
 
-          {/* Filters */}
-          {activeTab === 'tickets' && <TicketFilters onFilterChange={setFilters} activeFilters={filters} />}
+            {activeTab === 'tickets' && (
+              <>
+                <div className="relative flex-1 min-w-[300px]">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    placeholder="Search tickets by title, description, or ticket number..."
+                    value={filters.search || ''}
+                    onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+                    className="pl-9 h-8"
+                  />
+                </div>
 
-          {/* Action Buttons */}
-          <div className="flex items-center justify-end gap-2">
-            {activeTab === 'tickets' && <Button size="sm" onClick={() => navigate('/helpdesk/new')} className="gap-1.5 h-8">
-              <Plus className="h-3.5 w-3.5" />
-              <span className="text-sm">New Ticket</span>
-            </Button>}
-            {activeTab === 'problems' && <Button variant="outline" size="sm" onClick={() => setCreateProblemOpen(true)} className="gap-1.5 h-8">
-              <Plus className="h-3.5 w-3.5" />
-              <span className="text-sm">New Problem</span>
-            </Button>}
+                <Select
+                  value={filters.status || 'all'}
+                  onValueChange={(value) => setFilters({ ...filters, status: value === 'all' ? null : value })}
+                >
+                  <SelectTrigger className="w-[130px] h-8">
+                    <SelectValue placeholder="Status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Status</SelectItem>
+                    <SelectItem value="open">Open</SelectItem>
+                    <SelectItem value="in_progress">In Progress</SelectItem>
+                    <SelectItem value="on_hold">On Hold</SelectItem>
+                    <SelectItem value="resolved">Resolved</SelectItem>
+                    <SelectItem value="closed">Closed</SelectItem>
+                  </SelectContent>
+                </Select>
+
+                <Select
+                  value={filters.priority || 'all'}
+                  onValueChange={(value) => setFilters({ ...filters, priority: value === 'all' ? null : value })}
+                >
+                  <SelectTrigger className="w-[130px] h-8">
+                    <SelectValue placeholder="Priority" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Priority</SelectItem>
+                    <SelectItem value="urgent">Urgent</SelectItem>
+                    <SelectItem value="high">High</SelectItem>
+                    <SelectItem value="medium">Medium</SelectItem>
+                    <SelectItem value="low">Low</SelectItem>
+                  </SelectContent>
+                </Select>
+
+                <Button size="sm" onClick={() => navigate('/helpdesk/new')} className="gap-1.5 h-8">
+                  <Plus className="h-3.5 w-3.5" />
+                  <span className="text-sm">New Ticket</span>
+                </Button>
+              </>
+            )}
+
+            {activeTab === 'problems' && (
+              <Button variant="outline" size="sm" onClick={() => setCreateProblemOpen(true)} className="gap-1.5 h-8 ml-auto">
+                <Plus className="h-3.5 w-3.5" />
+                <span className="text-sm">New Problem</span>
+              </Button>
+            )}
           </div>
 
           <TabsContent value="tickets" className="space-y-2">
