@@ -32,7 +32,7 @@ export const ProfileSidebar = ({ activeSection }: ProfileSidebarProps) => {
   };
 
   return (
-    <aside className="bg-background sticky top-14 w-[200px] min-w-[200px] flex-shrink-0" style={{ height: 'calc(100vh - 3.5rem)' }}>
+    <aside className="bg-background h-full w-[200px] min-w-[200px] flex-shrink-0 border-r">
       <nav className="space-y-1 px-3 py-4 h-full overflow-y-auto">
         {visibleItems.map((item) => (
           <button
