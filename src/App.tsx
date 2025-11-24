@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import { OrganisationProvider } from "./contexts/OrganisationContext";
 import { ProtectedRoute } from "./components/ProtectedRoute";
@@ -62,10 +62,6 @@ import Login from "./pages/Login";
 import AuthConfirm from "./pages/AuthConfirm";
 
 import Profile from "./pages/Profile";
-import PersonalInfo from "./pages/profile/PersonalInfo";
-import Security from "./pages/profile/Security";
-import Privacy from "./pages/profile/Privacy";
-import Payments from "./pages/profile/Payments";
 import InitializeAdmin from "./pages/InitializeAdmin";
 import PasswordReset from "./pages/PasswordReset";
 import ResetPasswordConfirm from "./pages/ResetPasswordConfirm";
@@ -136,9 +132,10 @@ const App = () => {
           <Route path="/reset-password-confirm" element={<ResetPasswordConfirm />} />
           <Route path="/accept-invitation" element={<AcceptInvitation />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/profile/personal-info" element={<PersonalInfo />} />
-          <Route path="/profile/security" element={<Security />} />
-          <Route path="/profile/payments" element={<Payments />} />
+          <Route path="/profile/personal-info" element={<Navigate to="/profile#personal-info" replace />} />
+          <Route path="/profile/security" element={<Navigate to="/profile#security" replace />} />
+          <Route path="/profile/privacy" element={<Navigate to="/profile#privacy" replace />} />
+          <Route path="/profile/payments" element={<Navigate to="/profile#payments" replace />} />
           <Route path="/initialize-admin" element={<InitializeAdmin />} />
           <Route path="/depreciation" element={<ToolAccessGuard toolKey="assets"><Depreciation /></ToolAccessGuard>} />
           <Route path="/invoicing" element={<ToolAccessGuard toolKey="invoicing"><Invoicing /></ToolAccessGuard>} />
