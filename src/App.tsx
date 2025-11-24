@@ -134,7 +134,6 @@ const App = () => {
           <Route path="/profile" element={<Profile />} />
           <Route path="/profile/personal-info" element={<Navigate to="/profile#personal-info" replace />} />
           <Route path="/profile/security" element={<Navigate to="/profile#security" replace />} />
-          <Route path="/profile/privacy" element={<Navigate to="/profile#privacy" replace />} />
           <Route path="/profile/payments" element={<Navigate to="/profile#payments" replace />} />
           <Route path="/initialize-admin" element={<InitializeAdmin />} />
           <Route path="/depreciation" element={<ToolAccessGuard toolKey="assets"><Depreciation /></ToolAccessGuard>} />
