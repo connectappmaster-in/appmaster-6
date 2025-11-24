@@ -278,9 +278,9 @@ const Profile = () => {
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
       </div>;
   }
-  return <div className="h-screen bg-background overflow-hidden">
+  return <div className="min-h-screen bg-background">
       <Navbar />
-      <div className="flex pt-14 h-full">
+      <div className="flex pt-14">
         {/* Sidebar */}
         <ProfileSidebar activeSection={activeSection} />
 
