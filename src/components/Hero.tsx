@@ -1,14 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ArrowRight, BarChart3, CreditCard, FileText, Users, Ticket, Briefcase, MessageSquare } from "lucide-react";
+import { ArrowRight, BarChart3, FileText, Users, Ticket, MessageSquare } from "lucide-react";
 const Hero = () => {
   const featuredApps = [{
-    icon: Briefcase,
-    name: "Assets",
-    description: "Track business assets and calculate depreciation",
-    color: "text-green-600",
-    path: "/apps/assets"
-  }, {
     icon: Users,
     name: "Attendance",
     description: "Employee management and attendance tracking system",
@@ -32,12 +26,6 @@ const Hero = () => {
     description: "Streamline customer support with ticket management",
     color: "text-cyan-600",
     path: "/apps/helpdesk"
-  }, {
-    icon: CreditCard,
-    name: "Subscriptions",
-    description: "Manage recurring subscriptions and billing efficiently",
-    color: "text-orange-600",
-    path: "/apps/subscriptions"
   }];
   return <section className="relative pt-12 pb-8 px-4 bg-background overflow-hidden">
       {/* Animated Background Elements */}
@@ -83,7 +71,7 @@ const Hero = () => {
             <h3 className="text-center text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">
               Explore Our Apps
             </h3>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 max-w-7xl mx-auto">
+            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-7xl mx-auto">
               {featuredApps.map((app, index) => <Link key={index} to={app.path} className="block h-full">
                   <div className="bg-card/80 backdrop-blur-sm border border-border rounded-lg p-4 shadow-lg hover:shadow-2xl transition-all duration-300 group hover:border-primary/50 hover:scale-105 h-full">
                     <div className={`p-3 rounded-lg bg-background border border-border ${app.color} group-hover:scale-110 transition-transform duration-300 w-fit mb-3`}>
