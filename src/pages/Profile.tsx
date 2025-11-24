@@ -287,9 +287,9 @@ const Profile = () => {
 
       {/* Main Content with smooth scrolling */}
       <main className="flex-1 overflow-y-auto scroll-smooth">
-        <div className="max-w-5xl mx-auto px-4 space-y-0">
+        <div className="max-w-5xl mx-auto px-4 py-6 space-y-8">
           {/* Home Section */}
-          <section id="home" className="min-h-screen py-4 space-y-4">
+          <section id="home" className="py-4 space-y-4">
             {/* Header Section */}
             <div className="text-center space-y-3">
               <Avatar className="h-20 w-20 mx-auto border-4 border-primary/20">
@@ -363,22 +363,22 @@ const Profile = () => {
           </section>
 
           {/* Personal Info Section */}
-          <section id="personal-info" className="min-h-screen">
+          <section id="personal-info" className="py-4">
             <PersonalInfo />
           </section>
 
           {/* Security Section */}
-          <section id="security" className="min-h-screen">
+          <section id="security" className="py-4">
             <Security />
           </section>
 
           {/* Privacy Section */}
-          <section id="privacy" className="min-h-screen">
+          <section id="privacy" className="py-4">
             <Privacy />
           </section>
 
           {/* Payments Section */}
-          <section id="payments" className="min-h-screen">
+          <section id="payments" className="py-4">
             <Payments />
           </section>
         </div>
