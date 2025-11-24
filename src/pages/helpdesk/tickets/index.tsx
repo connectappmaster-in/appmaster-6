@@ -99,45 +99,7 @@ export default function TicketsModule() {
 
             {activeTab === 'tickets' && (
               <>
-                <Select
-                  value={filters.status || 'all'}
-                  onValueChange={(value) => setFilters({ ...filters, status: value === 'all' ? null : value })}
-                >
-                  <SelectTrigger className="w-[120px] h-8">
-                    <SelectValue placeholder="Status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Status</SelectItem>
-                    <SelectItem value="open">Open</SelectItem>
-                    <SelectItem value="in_progress">In Progress</SelectItem>
-                    <SelectItem value="on_hold">On Hold</SelectItem>
-                    <SelectItem value="resolved">Resolved</SelectItem>
-                    <SelectItem value="closed">Closed</SelectItem>
-                  </SelectContent>
-                </Select>
-
-                <Select
-                  value={filters.priority || 'all'}
-                  onValueChange={(value) => setFilters({ ...filters, priority: value === 'all' ? null : value })}
-                >
-                  <SelectTrigger className="w-[120px] h-8">
-                    <SelectValue placeholder="Priority" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Priority</SelectItem>
-                    <SelectItem value="urgent">Urgent</SelectItem>
-                    <SelectItem value="high">High</SelectItem>
-                    <SelectItem value="medium">Medium</SelectItem>
-                    <SelectItem value="low">Low</SelectItem>
-                  </SelectContent>
-                </Select>
-
-                <Button size="sm" onClick={() => navigate('/helpdesk/new')} className="gap-1.5 h-8">
-                  <Plus className="h-3.5 w-3.5" />
-                  <span className="text-sm">New Ticket</span>
-                </Button>
-
-                <div className="relative w-[250px] ml-auto">
+                <div className="relative w-[250px]">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
                     placeholder="Search tickets..."
@@ -146,11 +108,51 @@ export default function TicketsModule() {
                     className="pl-9 h-8"
                   />
                 </div>
+
+                <div className="flex items-center gap-2 ml-auto">
+                  <Select
+                    value={filters.status || 'all'}
+                    onValueChange={(value) => setFilters({ ...filters, status: value === 'all' ? null : value })}
+                  >
+                    <SelectTrigger className="w-[120px] h-8">
+                      <SelectValue placeholder="Status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Status</SelectItem>
+                      <SelectItem value="open">Open</SelectItem>
+                      <SelectItem value="in_progress">In Progress</SelectItem>
+                      <SelectItem value="on_hold">On Hold</SelectItem>
+                      <SelectItem value="resolved">Resolved</SelectItem>
+                      <SelectItem value="closed">Closed</SelectItem>
+                    </SelectContent>
+                  </Select>
+
+                  <Select
+                    value={filters.priority || 'all'}
+                    onValueChange={(value) => setFilters({ ...filters, priority: value === 'all' ? null : value })}
+                  >
+                    <SelectTrigger className="w-[120px] h-8">
+                      <SelectValue placeholder="Priority" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Priority</SelectItem>
+                      <SelectItem value="urgent">Urgent</SelectItem>
+                      <SelectItem value="high">High</SelectItem>
+                      <SelectItem value="medium">Medium</SelectItem>
+                      <SelectItem value="low">Low</SelectItem>
+                    </SelectContent>
+                  </Select>
+
+                  <Button size="sm" onClick={() => navigate('/helpdesk/new')} className="gap-1.5 h-8">
+                    <Plus className="h-3.5 w-3.5" />
+                    <span className="text-sm">New Ticket</span>
+                  </Button>
+                </div>
               </>
             )}
 
             {activeTab === 'problems' && (
-              <Button variant="outline" size="sm" onClick={() => setCreateProblemOpen(true)} className="gap-1.5 h-8">
+              <Button variant="outline" size="sm" onClick={() => setCreateProblemOpen(true)} className="gap-1.5 h-8 ml-auto">
                 <Plus className="h-3.5 w-3.5" />
                 <span className="text-sm">New Problem</span>
               </Button>
