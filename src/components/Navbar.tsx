@@ -24,7 +24,7 @@ const Navbar = () => {
   const getRoleDashboardLink = () => {
     // Super Admin
     if (userType === 'appmaster_admin' || appmasterRole) {
-      return { label: 'Super-Admin Panel', path: '/super-admin/dashboard', icon: Shield };
+      return { label: 'Super-Admin Panel', path: '/super-admin', icon: Shield };
     }
     
     // Individual User
