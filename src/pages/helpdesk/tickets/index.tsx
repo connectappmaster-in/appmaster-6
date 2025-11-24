@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { CreateProblemDialog } from "@/components/helpdesk/CreateProblemDialog";
-import { TicketStatsCards } from "@/components/helpdesk/TicketStatsCards";
 import { TicketFilters } from "@/components/helpdesk/TicketFilters";
 import { BulkActionsToolbar } from "@/components/helpdesk/BulkActionsToolbar";
 import { TicketTableView } from "@/components/helpdesk/TicketTableView";
@@ -101,8 +100,6 @@ export default function TicketsModule() {
           })}
           </div>
 
-          {/* Stats Cards */}
-          <TicketStatsCards />
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-3">
