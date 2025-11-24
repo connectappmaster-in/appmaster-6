@@ -7,7 +7,7 @@ interface ProfileSidebarProps {
 }
 
 const navigationItems = [
-  { title: "Home", icon: Home, id: "home" },
+  { title: "About", icon: Home, id: "home" },
   { title: "Personal info", icon: User, id: "personal-info" },
   { title: "Security", icon: Shield, id: "security" },
   { title: "Payments", icon: CreditCard, id: "payments", adminOnly: true },
@@ -32,7 +32,7 @@ export const ProfileSidebar = ({ activeSection }: ProfileSidebarProps) => {
   };
 
   return (
-    <aside className="bg-background h-full w-[200px] min-w-[200px] flex-shrink-0 border-r">
+    <aside className="bg-background h-full w-[200px] min-w-[200px] flex-shrink-0">
       <nav className="space-y-1 px-3 py-4 h-full overflow-y-auto">
         {visibleItems.map((item) => (
           <button
