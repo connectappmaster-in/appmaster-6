@@ -76,11 +76,11 @@ export default function TicketsModule() {
   };
   const quickLinks: any[] = [];
   return <div className="min-h-screen bg-background">
-      <div className="w-full px-4 py-3">
+      <div className="w-full px-4 py-2">
         {/* Header */}
-        <div className="mb-4">
+        <div className="mb-2">
           {/* Quick Links */}
-          <div className="flex flex-wrap gap-1.5 mb-3">
+          <div className="flex flex-wrap gap-1.5">
             {quickLinks.map(link => {
             const Icon = link.icon;
             return <Button key={link.path} variant="outline" size="sm" onClick={() => navigate(link.path)} className="gap-1.5 h-7 px-2.5 text-xs">
@@ -92,18 +92,18 @@ export default function TicketsModule() {
 
         </div>
 
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-3">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-2">
           {/* Compact Single Row Header */}
           <div className="flex items-center gap-2 flex-wrap">
-            <TabsList className="h-9">
-              <TabsTrigger value="tickets" className="gap-1.5 px-3 text-sm h-8">
+            <TabsList className="h-8">
+              <TabsTrigger value="tickets" className="gap-1.5 px-3 text-sm h-7">
                 <Ticket className="h-3.5 w-3.5" />
                 All Tickets
                 {tickets.length > 0 && <Badge variant="secondary" className="ml-1.5 text-xs px-1.5 py-0">
                     {tickets.length}
                   </Badge>}
               </TabsTrigger>
-              <TabsTrigger value="problems" className="gap-1.5 px-3 text-sm h-8">
+              <TabsTrigger value="problems" className="gap-1.5 px-3 text-sm h-7">
                 <AlertTriangle className="h-3.5 w-3.5" />
                 Problems
                 {problems.length > 0 && <Badge variant="secondary" className="ml-1.5 text-xs px-1.5 py-0">
@@ -114,21 +114,11 @@ export default function TicketsModule() {
 
             {activeTab === 'tickets' && (
               <>
-                <div className="relative w-[250px]">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    placeholder="Search tickets..."
-                    value={filters.search || ''}
-                    onChange={(e) => setFilters({ ...filters, search: e.target.value })}
-                    className="pl-9 h-8"
-                  />
-                </div>
-
                 <Select
                   value={filters.status || 'all'}
                   onValueChange={(value) => setFilters({ ...filters, status: value === 'all' ? null : value })}
                 >
-                  <SelectTrigger className="w-[130px] h-8">
+                  <SelectTrigger className="w-[120px] h-8">
                     <SelectValue placeholder="Status" />
                   </SelectTrigger>
                   <SelectContent>
@@ -145,7 +135,7 @@ export default function TicketsModule() {
                   value={filters.priority || 'all'}
                   onValueChange={(value) => setFilters({ ...filters, priority: value === 'all' ? null : value })}
                 >
-                  <SelectTrigger className="w-[130px] h-8">
+                  <SelectTrigger className="w-[120px] h-8">
                     <SelectValue placeholder="Priority" />
                   </SelectTrigger>
                   <SelectContent>
@@ -161,18 +151,28 @@ export default function TicketsModule() {
                   <Plus className="h-3.5 w-3.5" />
                   <span className="text-sm">New Ticket</span>
                 </Button>
+
+                <div className="relative w-[250px] ml-auto">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    placeholder="Search tickets..."
+                    value={filters.search || ''}
+                    onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+                    className="pl-9 h-8"
+                  />
+                </div>
               </>
             )}
 
             {activeTab === 'problems' && (
-              <Button variant="outline" size="sm" onClick={() => setCreateProblemOpen(true)} className="gap-1.5 h-8 ml-auto">
+              <Button variant="outline" size="sm" onClick={() => setCreateProblemOpen(true)} className="gap-1.5 h-8">
                 <Plus className="h-3.5 w-3.5" />
                 <span className="text-sm">New Problem</span>
               </Button>
             )}
           </div>
 
-          <TabsContent value="tickets" className="space-y-2">
+          <TabsContent value="tickets" className="space-y-2 mt-2">
 
             {/* Bulk Actions */}
             {selectedIds.length > 0 && <BulkActionsToolbar selectedIds={selectedIds} onClearSelection={() => setSelectedIds([])} />}
