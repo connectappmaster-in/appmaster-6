@@ -43,17 +43,20 @@ const Profile = () => {
   // Intersection Observer for tracking active section
   useEffect(() => {
     const observerOptions = {
-      root: null,
-      rootMargin: "-20% 0px -70% 0px",
-      threshold: 0
+      root: document.querySelector('main'),
+      rootMargin: "-10% 0px -50% 0px",
+      threshold: [0, 0.25, 0.5, 0.75, 1]
     };
 
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setActiveSection(entry.target.id);
-        }
-      });
+      // Find the section with the highest intersection ratio
+      const visibleSections = entries
+        .filter(entry => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+      
+      if (visibleSections.length > 0) {
+        setActiveSection(visibleSections[0].target.id);
+      }
     };
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
