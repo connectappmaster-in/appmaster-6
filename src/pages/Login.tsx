@@ -132,8 +132,7 @@ const Login = () => {
         <div className="bg-card rounded-lg border border-border shadow-lg p-6">
           {/* Greeting */}
           <div className="text-center mb-6">
-            <h1 className="text-2xl font-bold text-foreground mb-1">{greeting} 👋</h1>
-            <p className="text-sm text-muted-foreground">Sign in to continue to AppMaster</p>
+            <h1 className="text-2xl font-bold text-foreground">Sign in to continue to AppMaster</h1>
           </div>
 
           {/* Login Form */}
