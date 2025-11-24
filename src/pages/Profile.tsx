@@ -280,8 +280,8 @@ const Profile = () => {
   }
   return <div className="min-h-screen bg-background">
       <Navbar />
-      <div className="flex pt-14">
-        {/* Sidebar */}
+      <div className="flex h-screen pt-14">
+        {/* Sidebar - Fixed */}
         <ProfileSidebar activeSection={activeSection} />
 
       {/* Main Content with smooth scrolling */}
