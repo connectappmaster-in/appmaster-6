@@ -122,14 +122,14 @@ export default function TicketsModule() {
                     <span className="text-sm">Table</span>
                   </Button>
                 </div>}
-              <Button size="sm" onClick={() => navigate('/helpdesk/new')} className="gap-1.5 h-8">
+              {activeTab === 'tickets' && <Button size="sm" onClick={() => navigate('/helpdesk/new')} className="gap-1.5 h-8">
                 <Plus className="h-3.5 w-3.5" />
                 <span className="text-sm">New Ticket</span>
-              </Button>
-              <Button variant="outline" size="sm" onClick={() => setCreateProblemOpen(true)} className="gap-1.5 h-8">
+              </Button>}
+              {activeTab === 'problems' && <Button variant="outline" size="sm" onClick={() => setCreateProblemOpen(true)} className="gap-1.5 h-8">
                 <Plus className="h-3.5 w-3.5" />
                 <span className="text-sm">New Problem</span>
-              </Button>
+              </Button>}
             </div>
           </div>
 
