@@ -75,10 +75,6 @@ export default function TicketsModule() {
     setSelectedIds(checked ? tickets.map((t: any) => t.id) : []);
   };
   const quickLinks = [{
-    icon: Archive,
-    label: "Closed Archive",
-    path: "/helpdesk/tickets/closed-archive"
-  }, {
     icon: LinkIcon,
     label: "Linked Problems",
     path: "/helpdesk/tickets/linked-problems"
