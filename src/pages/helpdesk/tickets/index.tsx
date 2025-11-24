@@ -78,17 +78,6 @@ export default function TicketsModule() {
       <div className="w-full px-4 py-3">
         {/* Header */}
         <div className="mb-4">
-          <div className="flex items-center justify-end mb-3 gap-2">
-            <Button variant="outline" size="sm" onClick={() => navigate('/helpdesk/tickets/reports')} className="gap-1.5 h-8">
-              <BarChart3 className="h-3.5 w-3.5" />
-              <span className="text-sm">Reports</span>
-            </Button>
-            <Button size="sm" onClick={() => navigate('/helpdesk/new')} className="gap-1.5 h-8">
-              <Plus className="h-3.5 w-3.5" />
-              <span className="text-sm">New Ticket</span>
-            </Button>
-          </div>
-
           {/* Quick Links */}
           <div className="flex flex-wrap gap-1.5 mb-3">
             {quickLinks.map(link => {
@@ -133,6 +122,10 @@ export default function TicketsModule() {
                     <span className="text-sm">Table</span>
                   </Button>
                 </div>}
+              <Button size="sm" onClick={() => navigate('/helpdesk/new')} className="gap-1.5 h-8">
+                <Plus className="h-3.5 w-3.5" />
+                <span className="text-sm">New Ticket</span>
+              </Button>
               <Button variant="outline" size="sm" onClick={() => setCreateProblemOpen(true)} className="gap-1.5 h-8">
                 <Plus className="h-3.5 w-3.5" />
                 <span className="text-sm">New Problem</span>
