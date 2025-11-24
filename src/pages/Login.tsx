@@ -18,19 +18,20 @@ const Login = () => {
   const [name, setName] = useState("");
   const [orgName, setOrgName] = useState("");
   const [loading, setLoading] = useState(false);
-  const [greeting, setGreeting] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
   
   const redirectTo = (location.state as any)?.redirectTo || "/dashboard";
 
-  // Dynamic greeting based on time
+  // Load saved email on mount
   useEffect(() => {
-    const hour = new Date().getHours();
-    if (hour < 12) setGreeting("Good morning");
-    else if (hour < 18) setGreeting("Good afternoon");
-    else setGreeting("Good evening");
+    const savedEmail = localStorage.getItem("rememberedEmail");
+    if (savedEmail) {
+      setEmail(savedEmail);
+      setRememberMe(true);
+    }
   }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -38,6 +39,13 @@ const Login = () => {
     setLoading(true);
 
     try {
+      // Handle remember me functionality
+      if (rememberMe) {
+        localStorage.setItem("rememberedEmail", email);
+      } else {
+        localStorage.removeItem("rememberedEmail");
+      }
+
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -163,7 +171,11 @@ const Login = () => {
             
             <div className="flex items-center justify-between text-sm">
               <div className="flex items-center gap-2">
-                <Checkbox id="remember" />
+                <Checkbox 
+                  id="remember" 
+                  checked={rememberMe}
+                  onCheckedChange={(checked) => setRememberMe(checked as boolean)}
+                />
                 <label htmlFor="remember" className="text-foreground cursor-pointer">
                   Remember me
                 </label>
