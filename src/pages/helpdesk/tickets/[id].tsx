@@ -258,6 +258,52 @@ export default function TicketDetail() {
         </div>
 
         <div className="grid gap-3 lg:grid-cols-3">
+          <div className="space-y-3">
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base">Details</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm pt-0">
+                <div>
+                  <p className="text-xs text-muted-foreground mb-1.5">Description</p>
+                  <p className="whitespace-pre-wrap text-sm">{ticket.description}</p>
+                </div>
+
+                <Separator />
+
+                <div className="flex items-start gap-2">
+                  <User className="h-3.5 w-3.5 mt-0.5 text-muted-foreground shrink-0" />
+                  <div className="min-w-0">
+                    <p className="text-xs text-muted-foreground">Requester</p>
+                    <p className="font-medium truncate">{ticket.requester?.name || "Unknown"}</p>
+                  </div>
+                </div>
+
+                {ticket.assignee && (
+                  <div className="flex items-start gap-2">
+                    <Tag className="h-3.5 w-3.5 mt-0.5 text-muted-foreground shrink-0" />
+                    <div className="min-w-0">
+                      <p className="text-xs text-muted-foreground">Assigned to</p>
+                      <p className="font-medium truncate">{ticket.assignee.name}</p>
+                    </div>
+                  </div>
+                )}
+
+                {ticket.sla_due_date && (
+                  <div className="flex items-start gap-2">
+                    <Clock className="h-3.5 w-3.5 mt-0.5 text-muted-foreground shrink-0" />
+                    <div className="min-w-0">
+                      <p className="text-xs text-muted-foreground">SLA Due</p>
+                      <p className="font-medium">
+                        in {formatDistanceToNow(new Date(ticket.sla_due_date))}
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+
           <div className="lg:col-span-2">
             <Tabs defaultValue="comments" className="w-full">
               <TabsList className="grid w-full grid-cols-4 h-9">
@@ -401,52 +447,6 @@ export default function TicketDetail() {
                 </Card>
               </TabsContent>
             </Tabs>
-          </div>
-
-          <div className="space-y-3">
-            <Card>
-              <CardHeader className="pb-3">
-                <CardTitle className="text-base">Details</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3 text-sm pt-0">
-                <div>
-                  <p className="text-xs text-muted-foreground mb-1.5">Description</p>
-                  <p className="whitespace-pre-wrap text-sm">{ticket.description}</p>
-                </div>
-
-                <Separator />
-
-                <div className="flex items-start gap-2">
-                  <User className="h-3.5 w-3.5 mt-0.5 text-muted-foreground shrink-0" />
-                  <div className="min-w-0">
-                    <p className="text-xs text-muted-foreground">Requester</p>
-                    <p className="font-medium truncate">{ticket.requester?.name || "Unknown"}</p>
-                  </div>
-                </div>
-
-                {ticket.assignee && (
-                  <div className="flex items-start gap-2">
-                    <Tag className="h-3.5 w-3.5 mt-0.5 text-muted-foreground shrink-0" />
-                    <div className="min-w-0">
-                      <p className="text-xs text-muted-foreground">Assigned to</p>
-                      <p className="font-medium truncate">{ticket.assignee.name}</p>
-                    </div>
-                  </div>
-                )}
-
-                {ticket.sla_due_date && (
-                  <div className="flex items-start gap-2">
-                    <Clock className="h-3.5 w-3.5 mt-0.5 text-muted-foreground shrink-0" />
-                    <div className="min-w-0">
-                      <p className="text-xs text-muted-foreground">SLA Due</p>
-                      <p className="font-medium">
-                        in {formatDistanceToNow(new Date(ticket.sla_due_date))}
-                      </p>
-                    </div>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
           </div>
         </div>
       </div>
