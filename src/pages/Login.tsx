@@ -227,7 +227,7 @@ const Login = () => {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
-                  placeholder="John Doe"
+                  placeholder="Enter your full name"
                 />
               </div>
 
@@ -240,7 +240,7 @@ const Login = () => {
                     value={orgName}
                     onChange={(e) => setOrgName(e.target.value)}
                     required
-                    placeholder="Acme Corp"
+                    placeholder="Enter organization name"
                   />
                 </div>
               )}
