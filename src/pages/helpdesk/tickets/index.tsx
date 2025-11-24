@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
-import { Plus, Ticket, AlertTriangle, LayoutGrid, Table as TableIcon, Archive, Link as LinkIcon, BookOpen, Clock, Settings, BarChart3 } from "lucide-react";
+import { Plus, Ticket, AlertTriangle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -15,7 +15,6 @@ export default function TicketsModule() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("tickets");
   const [createProblemOpen, setCreateProblemOpen] = useState(false);
-  const [view, setView] = useState<'list' | 'table'>('list');
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [filters, setFilters] = useState<Record<string, any>>({});
   const {
@@ -112,16 +111,6 @@ export default function TicketsModule() {
             </TabsList>
             
             <div className="flex items-center gap-2">
-              {activeTab === 'tickets' && <div className="flex gap-1.5">
-                  <Button variant={view === 'list' ? 'default' : 'outline'} size="sm" onClick={() => setView('list')} className="gap-1.5 h-8 px-3">
-                    <LayoutGrid className="h-3.5 w-3.5" />
-                    <span className="text-sm">List</span>
-                  </Button>
-                  <Button variant={view === 'table' ? 'default' : 'outline'} size="sm" onClick={() => setView('table')} className="gap-1.5 h-8 px-3">
-                    <TableIcon className="h-3.5 w-3.5" />
-                    <span className="text-sm">Table</span>
-                  </Button>
-                </div>}
               {activeTab === 'tickets' && <Button size="sm" onClick={() => navigate('/helpdesk/new')} className="gap-1.5 h-8">
                 <Plus className="h-3.5 w-3.5" />
                 <span className="text-sm">New Ticket</span>
@@ -158,39 +147,7 @@ export default function TicketsModule() {
                     <Plus className="h-3.5 w-3.5" />
                     <span className="text-sm">Create First Ticket</span>
                   </Button>}
-              </div> : view === 'table' ? <TicketTableView tickets={tickets} selectedIds={selectedIds} onSelectTicket={handleSelectTicket} onSelectAll={handleSelectAll} /> : <div className="space-y-1.5">
-                {tickets.map((ticket: any) => <div key={ticket.id} className={`hover:bg-accent/50 transition-colors cursor-pointer p-3 rounded-md border ${selectedIds.includes(ticket.id) ? 'ring-2 ring-primary' : ''} ${ticket.sla_breached ? 'border-l-4 border-l-destructive' : ''}`} onClick={() => navigate(`/helpdesk/tickets/${ticket.id}`)}>
-                    <div className="flex items-start gap-2">
-                      <input type="checkbox" checked={selectedIds.includes(ticket.id)} onChange={() => handleSelectTicket(ticket.id)} onClick={e => e.stopPropagation()} className="mt-0.5 h-3.5 w-3.5 rounded border-input" />
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-1.5 mb-1.5 flex-wrap">
-                          <Badge variant="outline" className="font-mono text-[10px] h-5 px-1.5">
-                            {ticket.ticket_number}
-                          </Badge>
-                          <Badge variant="secondary" className="text-[10px] h-5 px-1.5">
-                            {ticket.status.replace('_', ' ')}
-                          </Badge>
-                          <Badge className={`text-[10px] h-5 px-1.5 ${ticket.priority === 'urgent' ? 'bg-red-500 hover:bg-red-600' : ticket.priority === 'high' ? 'bg-orange-500 hover:bg-orange-600' : ticket.priority === 'medium' ? 'bg-yellow-500 hover:bg-yellow-600' : 'bg-green-500 hover:bg-green-600'}`}>
-                            {ticket.priority}
-                          </Badge>
-                          {ticket.category && <Badge variant="outline" className="text-[10px] h-5 px-1.5">{ticket.category.name}</Badge>}
-                          {ticket.sla_breached && <Badge variant="destructive" className="gap-1 text-[10px] h-5 px-1.5">
-                              <Clock className="h-2.5 w-2.5" />
-                              SLA Breached
-                            </Badge>}
-                        </div>
-                        <h3 className="text-sm font-medium mb-0.5">{ticket.title}</h3>
-                        <p className="text-xs text-muted-foreground line-clamp-1 mb-1">
-                          {ticket.description}
-                        </p>
-                        <div className="flex items-center gap-2 text-[11px] text-muted-foreground">
-                          <span>Created {new Date(ticket.created_at).toLocaleDateString()}</span>
-                          {ticket.assignee && <span>• Assigned to {ticket.assignee.name}</span>}
-                        </div>
-                      </div>
-                    </div>
-                  </div>)}
-              </div>}
+              </div> : <TicketTableView tickets={tickets} selectedIds={selectedIds} onSelectTicket={handleSelectTicket} onSelectAll={handleSelectAll} />}
           </TabsContent>
 
           <TabsContent value="problems" className="space-y-2">
