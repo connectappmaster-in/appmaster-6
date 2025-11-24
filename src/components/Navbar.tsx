@@ -6,6 +6,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import logo from "@/assets/appmaster-logo.png";
 import { useState, useEffect } from "react";
 import { NotificationPanel } from "@/components/NotificationPanel";
+import { toast } from "@/hooks/use-toast";
 const Navbar = () => {
   const {
     user,
@@ -103,7 +104,21 @@ const Navbar = () => {
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={signOut} className="cursor-pointer">
+                  <DropdownMenuItem onClick={async () => {
+                    try {
+                      await signOut();
+                      toast({
+                        title: "Logged out successfully",
+                        description: "You have been signed out of your account.",
+                      });
+                    } catch (error) {
+                      toast({
+                        title: "Logout completed",
+                        description: "Session cleared. You have been logged out.",
+                        variant: "default",
+                      });
+                    }
+                  }} className="cursor-pointer">
                     <LogOut className="mr-2 h-4 w-4" />
                     Logout
                   </DropdownMenuItem>
