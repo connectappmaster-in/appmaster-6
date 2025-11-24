@@ -97,34 +97,34 @@ const Hero = () => {
         }}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-2xl mx-auto">
               {/* Custom Tool Request Card */}
-              <Link to="/contact" className="block">
-                <div className="bg-gradient-to-r from-primary/10 to-accent/10 backdrop-blur-sm border border-primary/20 rounded-lg p-3 shadow-md hover:shadow-lg transition-all duration-300 group hover:border-primary/50">
+              <Link to="/contact" className="block h-full">
+                <div className="bg-gradient-to-r from-primary/10 to-accent/10 backdrop-blur-sm border border-primary/20 rounded-lg p-3 shadow-md hover:shadow-lg transition-all duration-300 group hover:border-primary/50 h-full flex flex-col">
                   <div className="flex items-center gap-2 mb-2">
-                    <div className="p-2 rounded-lg bg-background border border-border text-primary group-hover:scale-110 transition-transform duration-300">
+                    <div className="p-2 rounded-lg bg-background border border-border text-primary group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
                       <MessageSquare className="h-4 w-4" />
                     </div>
                     <h3 className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">
                       Need a Custom Tool?
                     </h3>
                   </div>
-                  <p className="text-xs text-muted-foreground pl-8">
+                  <p className="text-xs text-muted-foreground pl-8 flex-1">
                     Let's build something specific for your business needs
                   </p>
                 </div>
               </Link>
 
               {/* Report Issue Card */}
-              <Link to="/report-issue" className="block">
-                <div className="bg-gradient-to-r from-destructive/10 to-destructive/5 backdrop-blur-sm border border-destructive/20 rounded-lg p-3 shadow-md hover:shadow-lg transition-all duration-300 group hover:border-destructive/50">
+              <Link to="/report-issue" className="block h-full">
+                <div className="bg-gradient-to-r from-destructive/10 to-destructive/5 backdrop-blur-sm border border-destructive/20 rounded-lg p-3 shadow-md hover:shadow-lg transition-all duration-300 group hover:border-destructive/50 h-full flex flex-col">
                   <div className="flex items-center gap-2 mb-2">
-                    <div className="p-2 rounded-lg bg-background border border-border text-destructive group-hover:scale-110 transition-transform duration-300">
+                    <div className="p-2 rounded-lg bg-background border border-border text-destructive group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
                       <MessageSquare className="h-4 w-4" />
                     </div>
                     <h3 className="text-sm font-semibold text-foreground group-hover:text-destructive transition-colors">
                       Report an Issue
                     </h3>
                   </div>
-                  <p className="text-xs text-muted-foreground pl-8">
+                  <p className="text-xs text-muted-foreground pl-8 flex-1">
                     Found a bug? Let us know and we'll fix it quickly
                   </p>
                 </div>
