@@ -6,6 +6,7 @@ import { useSRMStats } from "@/hooks/useSRMStats";
 import { DashboardStatCard } from "@/components/helpdesk/DashboardStatCard";
 import { RecentTicketsList } from "@/components/helpdesk/RecentTicketsList";
 import { SystemHealthMetrics } from "@/components/helpdesk/SystemHealthMetrics";
+import { TicketStatsCards } from "@/components/helpdesk/TicketStatsCards";
 
 export default function HelpdeskDashboard() {
   const { data: ticketStats } = useHelpdeskStats();
@@ -14,6 +15,9 @@ export default function HelpdeskDashboard() {
 
   return (
     <div className="max-w-7xl space-y-6">
+      {/* Ticket Stats Cards */}
+      <TicketStatsCards />
+      
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <DashboardStatCard
