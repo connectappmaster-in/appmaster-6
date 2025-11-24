@@ -114,8 +114,28 @@ export const TicketTableView = ({
                     variant="ghost"
                     size="icon"
                     onClick={() => navigate(`/helpdesk/tickets/${ticket.id}`)}
+                    title="View"
                   >
                     <Eye className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => navigate(`/helpdesk/tickets/${ticket.id}`)}
+                    title="Edit"
+                  >
+                    <Edit className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      // TODO: Open assign dialog
+                    }}
+                    title="Assign"
+                  >
+                    <UserPlus className="h-4 w-4" />
                   </Button>
                 </div>
               </TableCell>
