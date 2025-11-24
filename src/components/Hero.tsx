@@ -92,51 +92,41 @@ const Hero = () => {
           </div>
 
           {/* Action Cards Section */}
-          <div className="animate-fade-in mt-8" style={{
+          <div className="animate-fade-in mt-6" style={{
           animationDelay: "0.4s"
         }}>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-2xl mx-auto">
               {/* Custom Tool Request Card */}
               <Link to="/contact" className="block">
-                <div className="bg-gradient-to-r from-primary/10 to-accent/10 backdrop-blur-sm border border-primary/20 rounded-lg p-6 shadow-lg hover:shadow-2xl transition-all duration-300 group hover:border-primary/50 h-full">
-                  <div className="flex flex-col gap-4">
-                    <div className="p-4 rounded-lg bg-background border border-border text-primary group-hover:scale-110 transition-transform duration-300 w-fit">
-                      <MessageSquare className="h-8 w-8" />
+                <div className="bg-gradient-to-r from-primary/10 to-accent/10 backdrop-blur-sm border border-primary/20 rounded-lg p-3 shadow-md hover:shadow-lg transition-all duration-300 group hover:border-primary/50">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="p-2 rounded-lg bg-background border border-border text-primary group-hover:scale-110 transition-transform duration-300">
+                      <MessageSquare className="h-4 w-4" />
                     </div>
-                    <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors mb-2">
-                        Need a Custom Tool?
-                      </h3>
-                      <p className="text-sm text-muted-foreground">
-                        Let's build something specific for your business needs
-                      </p>
-                    </div>
-                    <div className="flex justify-end">
-                      <ArrowRight className="h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all duration-300" />
-                    </div>
+                    <h3 className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">
+                      Need a Custom Tool?
+                    </h3>
                   </div>
+                  <p className="text-xs text-muted-foreground pl-8">
+                    Let's build something specific for your business needs
+                  </p>
                 </div>
               </Link>
 
               {/* Report Issue Card */}
               <Link to="/report-issue" className="block">
-                <div className="bg-gradient-to-r from-destructive/10 to-destructive/5 backdrop-blur-sm border border-destructive/20 rounded-lg p-6 shadow-lg hover:shadow-2xl transition-all duration-300 group hover:border-destructive/50 h-full">
-                  <div className="flex flex-col gap-4">
-                    <div className="p-4 rounded-lg bg-background border border-border text-destructive group-hover:scale-110 transition-transform duration-300 w-fit">
-                      <MessageSquare className="h-8 w-8" />
+                <div className="bg-gradient-to-r from-destructive/10 to-destructive/5 backdrop-blur-sm border border-destructive/20 rounded-lg p-3 shadow-md hover:shadow-lg transition-all duration-300 group hover:border-destructive/50">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="p-2 rounded-lg bg-background border border-border text-destructive group-hover:scale-110 transition-transform duration-300">
+                      <MessageSquare className="h-4 w-4" />
                     </div>
-                    <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-foreground group-hover:text-destructive transition-colors mb-2">
-                        Report an Issue
-                      </h3>
-                      <p className="text-sm text-muted-foreground">
-                        Found a bug? Let us know and we'll fix it quickly
-                      </p>
-                    </div>
-                    <div className="flex justify-end">
-                      <ArrowRight className="h-5 w-5 text-muted-foreground group-hover:text-destructive group-hover:translate-x-1 transition-all duration-300" />
-                    </div>
+                    <h3 className="text-sm font-semibold text-foreground group-hover:text-destructive transition-colors">
+                      Report an Issue
+                    </h3>
                   </div>
+                  <p className="text-xs text-muted-foreground pl-8">
+                    Found a bug? Let us know and we'll fix it quickly
+                  </p>
                 </div>
               </Link>
             </div>
