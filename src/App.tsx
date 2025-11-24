@@ -57,6 +57,7 @@ import OpportunitiesPage from "./pages/crm/opportunities";
 import QuotesListPage from "./pages/crm/quotes";
 import PersonalExpense from "./pages/personal-expense";
 import Contact from "./pages/contact";
+import ReportIssue from "./pages/ReportIssue";
 import Admin from "./pages/admin/index";
 import Login from "./pages/Login";
 import AuthConfirm from "./pages/AuthConfirm";
@@ -182,6 +183,7 @@ const App = () => {
           <Route path="/crm/quotes" element={<ToolAccessGuard toolKey="crm"><QuotesListPage /></ToolAccessGuard>} />
           <Route path="/personal-expense" element={<PersonalExpense />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/report-issue" element={<ReportIssue />} />
           <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
           <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
           <Route path="/super-admin" element={<SuperAdminRoute><SuperAdmin /></SuperAdminRoute>}>
