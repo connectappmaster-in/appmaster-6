@@ -55,7 +55,7 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
   return <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-[var(--transition-base)] ${isScrolled ? "bg-background/95 backdrop-blur-lg shadow-sm border-b" : "bg-transparent"}`}>
-      <div className="w-full px-4 sm:px-6 lg:px-8 py-2 items-center justify-between flex flex-row">
+      <div className="w-full px-4 sm:px-6 lg:px-8 py-1 items-center justify-between flex flex-row">
         <div className="flex items-center gap-2">
           <Link to="/" className="flex items-center">
             <img 
