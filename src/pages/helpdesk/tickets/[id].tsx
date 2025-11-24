@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Loader2, Clock, User, Tag, MessageSquare, Edit, UserPlus, FileText, History, Paperclip, Link } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
 import { formatDistanceToNow } from "date-fns";
 import { toast } from "sonner";
 import { useState } from "react";
@@ -209,7 +210,25 @@ export default function TicketDetail() {
             )}
           </div>
 
-          <div className="flex gap-2 shrink-0">
+          <div className="flex gap-2 shrink-0 items-center">
+            <Select
+              value={newStatus || ticket.status}
+              onValueChange={(value) => {
+                setNewStatus(value);
+                updateStatus.mutate(value);
+              }}
+            >
+              <SelectTrigger className="h-8 text-xs w-32">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="open">Open</SelectItem>
+                <SelectItem value="in_progress">In Progress</SelectItem>
+                <SelectItem value="on_hold">On Hold</SelectItem>
+                <SelectItem value="resolved">Resolved</SelectItem>
+                <SelectItem value="closed">Closed</SelectItem>
+              </SelectContent>
+            </Select>
             <Button
               variant="outline"
               size="sm"
@@ -240,12 +259,8 @@ export default function TicketDetail() {
 
         <div className="grid gap-3 lg:grid-cols-3">
           <div className="lg:col-span-2">
-            <Tabs defaultValue="details" className="w-full">
-              <TabsList className="grid w-full grid-cols-5 h-9">
-                <TabsTrigger value="details" className="text-xs px-2 py-1.5">
-                  <FileText className="h-3.5 w-3.5 mr-1" />
-                  Details
-                </TabsTrigger>
+            <Tabs defaultValue="comments" className="w-full">
+              <TabsList className="grid w-full grid-cols-4 h-9">
                 <TabsTrigger value="comments" className="text-xs px-2 py-1.5">
                   <MessageSquare className="h-3.5 w-3.5 mr-1" />
                   Comments ({comments?.length || 0})
@@ -263,17 +278,6 @@ export default function TicketDetail() {
                   Problems ({linkedProblems?.length || 0})
                 </TabsTrigger>
               </TabsList>
-
-              <TabsContent value="details" className="mt-3">
-                <Card>
-                  <CardHeader className="pb-3">
-                    <CardTitle className="text-base">Description</CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-0">
-                    <p className="whitespace-pre-wrap text-sm">{ticket.description}</p>
-                  </CardContent>
-                </Card>
-              </TabsContent>
 
               <TabsContent value="comments" className="mt-3">
                 <Card>
@@ -402,42 +406,16 @@ export default function TicketDetail() {
           <div className="space-y-3">
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="text-base">Status</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-2 pt-0">
-                <Select
-                  value={newStatus || ticket.status}
-                  onValueChange={setNewStatus}
-                >
-                  <SelectTrigger className="h-8 text-sm">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="open">Open</SelectItem>
-                    <SelectItem value="in_progress">In Progress</SelectItem>
-                    <SelectItem value="on_hold">On Hold</SelectItem>
-                    <SelectItem value="resolved">Resolved</SelectItem>
-                    <SelectItem value="closed">Closed</SelectItem>
-                  </SelectContent>
-                </Select>
-                {newStatus && newStatus !== ticket.status && (
-                  <Button
-                    size="sm"
-                    onClick={() => updateStatus.mutate(newStatus)}
-                    disabled={updateStatus.isPending}
-                    className="w-full h-8"
-                  >
-                    Update Status
-                  </Button>
-                )}
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader className="pb-3">
                 <CardTitle className="text-base">Details</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-2.5 text-sm pt-0">
+              <CardContent className="space-y-3 text-sm pt-0">
+                <div>
+                  <p className="text-xs text-muted-foreground mb-1.5">Description</p>
+                  <p className="whitespace-pre-wrap text-sm">{ticket.description}</p>
+                </div>
+
+                <Separator />
+
                 <div className="flex items-start gap-2">
                   <User className="h-3.5 w-3.5 mt-0.5 text-muted-foreground shrink-0" />
                   <div className="min-w-0">
