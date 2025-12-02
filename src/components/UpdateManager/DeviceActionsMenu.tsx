@@ -65,6 +65,7 @@ export const DeviceActionsMenu = ({ deviceId, deviceName, organisationId }: Devi
       const insertData = {
         device_id: deviceId,
         organisation_id: organisationId,
+        tenant_id: 1,
         action_type: actionType,
         action_payload: payload || {},
         initiated_by: user.id,
