@@ -13,6 +13,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { Monitor, CheckCircle, XCircle, AlertTriangle, Clock } from "lucide-react";
 import { format } from "date-fns";
+import { DeviceActionsMenu } from "./DeviceActionsMenu";
 
 interface SystemDevice {
   id: string;
@@ -27,6 +28,7 @@ interface SystemDevice {
   pending_critical_count: number | null;
   pending_total_count: number | null;
   failed_updates_count: number | null;
+  organisation_id: string | null;
   created_at: string;
 }
 
@@ -199,6 +201,7 @@ export const ActiveMachinesList = () => {
                 <TableHead>Pending</TableHead>
                 <TableHead>Failed</TableHead>
                 <TableHead>Compliance</TableHead>
+                <TableHead className="w-10"></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -255,6 +258,13 @@ export const ActiveMachinesList = () => {
                       status={machine.update_compliance_status}
                       pendingCritical={machine.pending_critical_count}
                       failedCount={machine.failed_updates_count}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <DeviceActionsMenu
+                      deviceId={machine.id}
+                      deviceName={machine.device_name}
+                      organisationId={machine.organisation_id}
                     />
                   </TableCell>
                 </TableRow>
