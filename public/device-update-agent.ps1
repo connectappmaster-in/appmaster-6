@@ -5,7 +5,7 @@
 # IMPORTANT: Get your API key from AppMaster Settings > Device Update Agent
 # The API key can be found in your Settings under "Update Settings"
 $API_ENDPOINT = "https://zxtpfrgsfuiwdppgiliv.supabase.co/functions/v1/ingest-device-updates"
-$API_KEY = "6q^:I`0Zt!)acO1LrD1%LLFam4FDWn"  # Replace with your actual API key from Settings
+$API_KEY = '6q^:I`0Zt!)acO1LrD1%LLFam4FDWn'  # Use SINGLE QUOTES to prevent escape character issues
 $ORGANISATION_ID = "28374dab-a447-44e2-a65f-edc644553b31"  # Replace with your organisation ID
 
 # === FUNCTIONS ===
