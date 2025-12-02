@@ -1,5 +1,6 @@
 # AppMaster Device Update Agent
 # This script collects Windows Update information and sends it to AppMaster
+# It also polls for and executes pending remote actions
 
 # === CONFIGURATION ===
 $API_ENDPOINT = "https://zxtpfrgsfuiwdppgiliv.supabase.co/functions/v1/ingest-device-updates"
@@ -95,6 +96,132 @@ function Get-FailedUpdates {
     }
 }
 
+function Execute-RemoteAction {
+    param (
+        [Parameter(Mandatory=$true)]
+        [hashtable]$Action
+    )
+    
+    $result = @{
+        action_id = $Action.id
+        status = "completed"
+        exit_code = 0
+        output = ""
+        error = $null
+    }
+    
+    try {
+        Write-Host "  Executing action: $($Action.action_type)" -ForegroundColor Cyan
+        
+        switch ($Action.action_type) {
+            "run_command" {
+                $command = $Action.action_payload.command
+                if ($command) {
+                    Write-Host "    Command: $command" -ForegroundColor Gray
+                    $output = Invoke-Expression $command 2>&1 | Out-String
+                    $result.output = $output
+                    $result.exit_code = $LASTEXITCODE
+                    if ($null -eq $result.exit_code) { $result.exit_code = 0 }
+                }
+            }
+            
+            "reboot" {
+                Write-Host "    Scheduling reboot in 60 seconds..." -ForegroundColor Yellow
+                $result.output = "Reboot scheduled"
+                shutdown /r /t 60 /c "AppMaster remote reboot requested"
+            }
+            
+            "shutdown" {
+                Write-Host "    Scheduling shutdown in 60 seconds..." -ForegroundColor Yellow
+                $result.output = "Shutdown scheduled"
+                shutdown /s /t 60 /c "AppMaster remote shutdown requested"
+            }
+            
+            "lock" {
+                Write-Host "    Locking workstation..." -ForegroundColor Yellow
+                rundll32.exe user32.dll,LockWorkStation
+                $result.output = "Workstation locked"
+            }
+            
+            "scan_updates" {
+                Write-Host "    Triggering Windows Update scan..." -ForegroundColor Yellow
+                $updateSession = New-Object -ComObject Microsoft.Update.Session
+                $updateSearcher = $updateSession.CreateUpdateSearcher()
+                $searchResult = $updateSearcher.Search("IsInstalled=0")
+                $result.output = "Scan completed. Found $($searchResult.Updates.Count) updates."
+            }
+            
+            "install_updates" {
+                Write-Host "    Installing Windows Updates..." -ForegroundColor Yellow
+                $updateSession = New-Object -ComObject Microsoft.Update.Session
+                $updateSearcher = $updateSession.CreateUpdateSearcher()
+                $searchResult = $updateSearcher.Search("IsInstalled=0")
+                
+                if ($searchResult.Updates.Count -eq 0) {
+                    $result.output = "No updates to install"
+                } else {
+                    $updatesToInstall = New-Object -ComObject Microsoft.Update.UpdateColl
+                    foreach ($update in $searchResult.Updates) {
+                        if ($update.IsDownloaded) {
+                            $updatesToInstall.Add($update) | Out-Null
+                        }
+                    }
+                    
+                    if ($updatesToInstall.Count -gt 0) {
+                        $installer = $updateSession.CreateUpdateInstaller()
+                        $installer.Updates = $updatesToInstall
+                        $installResult = $installer.Install()
+                        $result.output = "Installation completed. Result code: $($installResult.ResultCode)"
+                        $result.exit_code = $installResult.ResultCode
+                    } else {
+                        # Download first
+                        $downloader = $updateSession.CreateUpdateDownloader()
+                        $downloader.Updates = $searchResult.Updates
+                        $downloadResult = $downloader.Download()
+                        $result.output = "Updates downloaded. Restart agent to install."
+                    }
+                }
+            }
+            
+            "push_wallpaper" {
+                $wallpaperUrl = $Action.action_payload.wallpaper_url
+                if ($wallpaperUrl) {
+                    Write-Host "    Setting wallpaper from: $wallpaperUrl" -ForegroundColor Yellow
+                    $wallpaperPath = "$env:TEMP\appmaster_wallpaper.jpg"
+                    Invoke-WebRequest -Uri $wallpaperUrl -OutFile $wallpaperPath -UseBasicParsing
+                    
+                    # Set wallpaper using SystemParametersInfo
+                    Add-Type -TypeDefinition @"
+using System;
+using System.Runtime.InteropServices;
+public class Wallpaper {
+    [DllImport("user32.dll", CharSet = CharSet.Auto)]
+    public static extern int SystemParametersInfo(int uAction, int uParam, string lpvParam, int fuWinIni);
+}
+"@
+                    [Wallpaper]::SystemParametersInfo(0x0014, 0, $wallpaperPath, 0x01 -bor 0x02) | Out-Null
+                    $result.output = "Wallpaper set successfully"
+                }
+            }
+            
+            default {
+                $result.output = "Unknown action type: $($Action.action_type)"
+                $result.status = "failed"
+            }
+        }
+        
+        Write-Host "    Action completed successfully" -ForegroundColor Green
+    }
+    catch {
+        $result.status = "failed"
+        $result.error = $_.Exception.Message
+        $result.exit_code = 1
+        Write-Host "    Action failed: $($_.Exception.Message)" -ForegroundColor Red
+    }
+    
+    return $result
+}
+
 # === MAIN SCRIPT ===
 
 Write-Host ""
@@ -105,7 +232,7 @@ Write-Host "Started at: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')" -ForegroundCo
 Write-Host ""
 
 # Collect device information
-Write-Host "[1/3] Collecting device information..." -ForegroundColor Yellow
+Write-Host "[1/4] Collecting device information..." -ForegroundColor Yellow
 try {
     $computerInfo = Get-ComputerInfo
     $hostname = $env:COMPUTERNAME
@@ -126,7 +253,7 @@ try {
 }
 
 # Collect update information
-Write-Host "[2/3] Scanning for updates..." -ForegroundColor Yellow
+Write-Host "[2/4] Scanning for updates..." -ForegroundColor Yellow
 $pendingUpdates = Get-PendingUpdates
 $installedUpdates = Get-InstalledUpdates
 $failedUpdates = Get-FailedUpdates
@@ -149,10 +276,11 @@ $payload = @{
     pending_updates = $pendingUpdates
     installed_updates = $installedUpdates
     failed_updates = $failedUpdates
-} | ConvertTo-Json -Depth 10
+    action_results = @()
+}
 
 # Send to AppMaster
-Write-Host "[3/3] Sending data to AppMaster..." -ForegroundColor Yellow
+Write-Host "[3/4] Sending data to AppMaster..." -ForegroundColor Yellow
 Write-Host "  Endpoint: $API_ENDPOINT" -ForegroundColor Gray
 
 try {
@@ -161,7 +289,8 @@ try {
         "Content-Type" = "application/json"
     }
     
-    $response = Invoke-RestMethod -Uri $API_ENDPOINT -Method Post -Headers $headers -Body $payload -TimeoutSec 30
+    $jsonPayload = $payload | ConvertTo-Json -Depth 10
+    $response = Invoke-RestMethod -Uri $API_ENDPOINT -Method Post -Headers $headers -Body $jsonPayload -TimeoutSec 30
     
     Write-Host ""
     Write-Host "SUCCESS!" -ForegroundColor Green
@@ -170,6 +299,38 @@ try {
     Write-Host "  Compliance: $($response.compliance_status)" -ForegroundColor $(if ($response.compliance_status -eq "compliant") { "Green" } else { "Red" })
     Write-Host "  Updates Processed: $($response.updates_processed)" -ForegroundColor Gray
     Write-Host ""
+    
+    # Check for pending actions
+    if ($response.pending_actions -and $response.pending_actions.Count -gt 0) {
+        Write-Host "[4/4] Processing $($response.pending_actions.Count) pending action(s)..." -ForegroundColor Yellow
+        
+        $actionResults = @()
+        foreach ($action in $response.pending_actions) {
+            $actionResult = Execute-RemoteAction -Action $action
+            $actionResults += $actionResult
+        }
+        
+        # Send action results back
+        if ($actionResults.Count -gt 0) {
+            Write-Host ""
+            Write-Host "  Reporting action results..." -ForegroundColor Gray
+            
+            $resultPayload = @{
+                hostname = $hostname
+                os_version = $osVersion
+                pending_updates = @()
+                installed_updates = @()
+                action_results = $actionResults
+            }
+            
+            $resultJson = $resultPayload | ConvertTo-Json -Depth 10
+            Invoke-RestMethod -Uri $API_ENDPOINT -Method Post -Headers $headers -Body $resultJson -TimeoutSec 30 | Out-Null
+            
+            Write-Host "  Action results reported successfully" -ForegroundColor Green
+        }
+    } else {
+        Write-Host "[4/4] No pending actions" -ForegroundColor Gray
+    }
 }
 catch {
     Write-Host ""

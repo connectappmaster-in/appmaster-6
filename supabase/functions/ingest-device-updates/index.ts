@@ -29,6 +29,14 @@ interface DeviceUpdatePayload {
     title: string;
     error_code?: string;
   }>;
+  // Action results from agent
+  action_results?: Array<{
+    action_id: string;
+    status: 'completed' | 'failed';
+    exit_code?: number;
+    output?: string;
+    error?: string;
+  }>;
 }
 
 Deno.serve(async (req) => {
@@ -68,7 +76,7 @@ Deno.serve(async (req) => {
 
     // Parse request body
     const payload: DeviceUpdatePayload = await req.json();
-    console.log('Payload received:', JSON.stringify(payload, null, 2));
+    console.log('Payload received for device:', payload.hostname);
 
     // Validate required fields
     if (!payload.hostname || !payload.os_version) {
@@ -190,6 +198,25 @@ Deno.serve(async (req) => {
       console.log('Device created successfully:', deviceId);
     }
 
+    // Process action results from agent
+    if (payload.action_results && payload.action_results.length > 0) {
+      console.log(`Processing ${payload.action_results.length} action results`);
+      for (const result of payload.action_results) {
+        const updateData: any = {
+          status: result.status,
+          completed_at: new Date().toISOString(),
+          exit_code: result.exit_code,
+          result: { output: result.output },
+          error_message: result.error,
+        };
+
+        await supabase
+          .from('device_actions')
+          .update(updateData)
+          .eq('id', result.action_id);
+      }
+    }
+
     // Log updates to system_updates table
     const updateEntries = [];
 
@@ -256,10 +283,28 @@ Deno.serve(async (req) => {
 
       if (updatesError) {
         console.error('Error logging updates:', updatesError);
-        // Don't fail the entire request if update logging fails
       } else {
         console.log('Updates logged successfully');
       }
+    }
+
+    // Fetch pending actions for this device
+    const { data: pendingActions } = await supabase
+      .from('device_actions')
+      .select('id, action_type, action_payload, priority')
+      .eq('device_id', deviceId)
+      .eq('status', 'pending')
+      .order('priority', { ascending: false })
+      .order('created_at', { ascending: true });
+
+    // Mark fetched actions as in_progress
+    if (pendingActions && pendingActions.length > 0) {
+      const actionIds = pendingActions.map(a => a.id);
+      await supabase
+        .from('device_actions')
+        .update({ status: 'in_progress', started_at: new Date().toISOString() })
+        .in('id', actionIds);
+      console.log(`Dispatching ${pendingActions.length} actions to device`);
     }
 
     const response = {
@@ -268,9 +313,10 @@ Deno.serve(async (req) => {
       hostname: payload.hostname,
       compliance_status: complianceStatus,
       updates_processed: updateEntries.length,
+      pending_actions: pendingActions || [],
     };
 
-    console.log('Response:', JSON.stringify(response));
+    console.log('Response sent with', response.pending_actions.length, 'pending actions');
 
     return new Response(
       JSON.stringify(response),
@@ -283,7 +329,6 @@ Deno.serve(async (req) => {
       JSON.stringify({ 
         error: 'Internal server error', 
         details: error instanceof Error ? error.message : 'Unknown error',
-        stack: error instanceof Error ? error.stack : undefined,
       }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
